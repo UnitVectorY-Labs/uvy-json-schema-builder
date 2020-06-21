@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.unitvectory</groupId>
+	<artifactId>jsonschemabuilder</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>uvy-json-schema-builder</name>
+	<description>Java Library for generating JSON Schema using Builders</description>
+	<url>https://github.com/UnitVectorY-Labs/uvy-json-schema-builder</url>
+	<inceptionYear>2020</inceptionYear>
+
+	<organization>
+		<name>UnitVectorY Labs</name>
+		<url>https://github.com/UnitVectorY-Labs</url>
+	</organization>
+
+	<issueManagement>
+		<url>https://github.com/UnitVectorY-Labs/uvy-json-schema-builder/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/UnitVectorY-Labs/uvy-json-schema-builder</url>
+		<connection>scm:git:git://github.com/UnitVectorY-Labs/uvy-json-schema-builder.git</connection>
+		<developerConnection>scm:git:git@github.com:UnitVectorY-Labs/uvy-json-schema-builder.git</developerConnection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Jared Hatfield</name>
+			<url>https://github.com/JaredHatfield</url>
+			<id>JaredHatfield</id>
+		</developer>
+	</developers>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<junit.version>4.13</junit.version>
+		<commons-io.version>2.7</commons-io.version>
+		<jsonassert.version>1.5.0</jsonassert.version>
+		<json.version>20200518</json.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.skyscreamer/jsonassert -->
+		<dependency>
+			<groupId>org.skyscreamer</groupId>
+			<artifactId>jsonassert</artifactId>
+			<version>${jsonassert.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>com.vaadin.external.google</groupId>
+					<artifactId>android-json</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${json.version}</version>
+		</dependency>
+	</dependencies>
+</project>
