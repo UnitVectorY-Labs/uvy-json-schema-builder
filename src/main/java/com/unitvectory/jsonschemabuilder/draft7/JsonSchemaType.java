@@ -13,8 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.unitvectory.jsonschemabuilder;
+package com.unitvectory.jsonschemabuilder.draft7;
 
-public class JsonSchemaBuilder {
+enum JsonSchemaType {
 
+	OBJECT("object"),
+
+	ARRAY("array"),
+
+	STRING("string"),
+
+	CONST("const"),
+
+	NUMBER("number"),
+
+	INTEGER("integer"),
+
+	BOOLEAN("boolean"),
+
+	NULL("null"),
+
+	;
+
+	private final String type;
+
+	private JsonSchemaType(String type) {
+		this.type = type;
+	}
+
+	public String getType() {
+		return this.type;
+
+	}
 }
