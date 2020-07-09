@@ -30,35 +30,35 @@ public class JsonSchemaIntegerTest {
 
 	@Test
 	public void testMultipleOf() {
-		JSONObject actualSchema = JsonSchemaNumber.Builder.create().withMultipleOf(123).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.Builder.create().withMultipleOf(123).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"multipleOf\":123}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinimum() {
-		JSONObject actualSchema = JsonSchemaNumber.Builder.create().withMinimum(4).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.Builder.create().withMinimum(4).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"minimum\":4}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMinimum() {
-		JSONObject actualSchema = JsonSchemaNumber.Builder.create().withExclusiveMinimum(5).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.Builder.create().withExclusiveMinimum(5).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"exclusiveMinimum\":5}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaximum() {
-		JSONObject actualSchema = JsonSchemaNumber.Builder.create().withMaximum(6).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.Builder.create().withMaximum(6).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"maximum\":6}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMaximum() {
-		JSONObject actualSchema = JsonSchemaNumber.Builder.create().withExclusiveMaximum(7).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.Builder.create().withExclusiveMaximum(7).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"exclusiveMaximum\":7}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
