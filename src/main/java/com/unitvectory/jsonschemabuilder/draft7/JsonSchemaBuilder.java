@@ -20,4 +20,6 @@ import org.json.JSONObject;
 public abstract class JsonSchemaBuilder {
 
 	abstract JSONObject schema();
+
+	abstract boolean isRequired();
 }

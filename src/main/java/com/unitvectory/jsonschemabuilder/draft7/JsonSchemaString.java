@@ -21,6 +21,8 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 
 	private final JsonSchemaType type = JsonSchemaType.STRING;
 
+	private final boolean required;
+
 	private final Integer minLength;
 
 	private final Integer maxLength;
@@ -28,6 +30,7 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 	private final String pattern;
 
 	private JsonSchemaString(Builder builder) {
+		this.required = builder.required;
 		this.minLength = builder.minLength;
 		this.maxLength = builder.maxLength;
 		this.pattern = builder.pattern;
@@ -51,7 +54,13 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		return json;
 	}
 
+	boolean isRequired() {
+		return this.required;
+	}
+
 	public static class Builder {
+
+		private boolean required;
 
 		private Integer minLength;
 
@@ -60,6 +69,15 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		private String pattern;
 
 		private Builder() {
+		}
+
+		public static Builder create() {
+			return new Builder();
+		}
+
+		public Builder withRequired() {
+			this.required = true;
+			return this;
 		}
 
 		public Builder withMinLength(int minLength) {
@@ -75,10 +93,6 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		public Builder withPattern(String pattern) {
 			this.pattern = pattern;
 			return this;
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public JsonSchemaString build() {

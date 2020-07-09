@@ -44,4 +44,14 @@ public class JsonSchemaObjectTest {
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
+	@Test
+	public void testStringRequired() {
+		JSONObject actualSchema = JsonSchemaObject.Builder.create()
+				.withProperty("foo", JsonSchemaString.Builder.create().withMinLength(2).withRequired().build()).build()
+				.schema();
+		JSONObject expectedSchema = new JSONObject(
+				"{\"type\":\"object\",\"properties\":{\"foo\":{\"minLength\":2,\"type\":\"string\"}},\"required\":[\"foo\"]}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
 }

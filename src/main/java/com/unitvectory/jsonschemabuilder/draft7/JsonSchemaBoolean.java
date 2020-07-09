@@ -21,7 +21,10 @@ public class JsonSchemaBoolean extends JsonSchemaBuilder {
 
 	private final JsonSchemaType type = JsonSchemaType.BOOLEAN;
 
+	private final boolean required;
+
 	private JsonSchemaBoolean(Builder builder) {
+		this.required = builder.required;
 	}
 
 	JSONObject schema() {
@@ -31,13 +34,25 @@ public class JsonSchemaBoolean extends JsonSchemaBuilder {
 		return json;
 	}
 
+	boolean isRequired() {
+		return this.required;
+	}
+
 	public static class Builder {
 
+		private boolean required;
+
 		private Builder() {
+			this.required = false;
 		}
 
 		public static Builder create() {
 			return new Builder();
+		}
+
+		public Builder withRequired() {
+			this.required = true;
+			return this;
 		}
 
 		public JsonSchemaBoolean build() {

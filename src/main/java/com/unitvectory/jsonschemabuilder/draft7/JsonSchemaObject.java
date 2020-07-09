@@ -19,18 +19,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final JsonSchemaType type = JsonSchemaType.OBJECT;
 
+	private final boolean required;
+
 	private final Map<String, JsonSchemaBuilder> properties;
 
 	private final Boolean additionalProperties;
 
 	private JsonSchemaObject(Builder builder) {
+		this.required = builder.required;
 		Map<String, JsonSchemaBuilder> propertiesMap = new HashMap<String, JsonSchemaBuilder>();
 		propertiesMap.putAll(builder.properties);
 		this.properties = Collections.unmodifiableMap(propertiesMap);
@@ -43,12 +49,27 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
 
+		Set<String> required = new TreeSet<String>();
+
 		if (this.properties.size() > 0) {
 			JSONObject propertiesObj = new JSONObject();
 			json.put("properties", propertiesObj);
 
 			for (Entry<String, JsonSchemaBuilder> entry : this.properties.entrySet()) {
 				propertiesObj.put(entry.getKey(), entry.getValue().schema());
+
+				if (entry.getValue().isRequired()) {
+					required.add(entry.getKey());
+				}
+			}
+		}
+
+		if (required.size() > 0) {
+			JSONArray requiredArr = new JSONArray();
+			json.put("required", requiredArr);
+
+			for (String r : required) {
+				requiredArr.put(r);
 			}
 		}
 
@@ -59,7 +80,13 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		return json;
 	}
 
+	boolean isRequired() {
+		return this.required;
+	}
+
 	public static class Builder {
+
+		private boolean required;
 
 		private Map<String, JsonSchemaBuilder> properties;
 
@@ -71,6 +98,11 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		public static Builder create() {
 			return new Builder();
+		}
+
+		public Builder withRequired() {
+			this.required = true;
+			return this;
 		}
 
 		public Builder withProperty(String name, JsonSchemaString jsonSchemaString) {

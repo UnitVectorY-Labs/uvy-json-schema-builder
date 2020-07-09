@@ -21,6 +21,8 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 
 	private final JsonSchemaType type = JsonSchemaType.NUMBER;
 
+	private final boolean required;
+
 	private final Integer multipleOfI;
 
 	private final Double multipleOfD;
@@ -42,6 +44,7 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 	private Double exclusiveMaximumD;
 
 	private JsonSchemaNumber(Builder builder) {
+		this.required = builder.required;
 		this.multipleOfI = builder.multipleOfI;
 		this.multipleOfD = builder.multipleOfD;
 		this.minimumI = builder.minimumI;
@@ -91,7 +94,13 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		return json;
 	}
 
+	boolean isRequired() {
+		return this.required;
+	}
+
 	public static class Builder {
+
+		private boolean required;
 
 		private Integer multipleOfI;
 
@@ -114,6 +123,15 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		private Double exclusiveMaximumD;
 
 		private Builder() {
+		}
+
+		public static Builder create() {
+			return new Builder();
+		}
+
+		public Builder withRequired() {
+			this.required = true;
+			return this;
 		}
 
 		public Builder withMultipleOf(int multipleOf) {
@@ -174,10 +192,6 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 			this.exclusiveMaximumD = exclusiveMaximum;
 			this.exclusiveMaximumI = null;
 			return this;
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public JsonSchemaNumber build() {
