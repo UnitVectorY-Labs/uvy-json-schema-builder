@@ -59,6 +59,16 @@ public class JsonSchemaObjectTest {
 	}
 
 	@Test
+	public void testPatternString() {
+		JSONObject actualSchema = JsonSchemaObject.Builder.create()
+				.withPatternProperty("^S_", JsonSchemaString.Builder.create().withMinLength(2).build()).build()
+				.schema();
+		JSONObject expectedSchema = new JSONObject(
+				"{\"type\":\"object\",\"patternProperties\":{\"^S_\":{\"minLength\":2,\"type\":\"string\"}}}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testStringRequired() {
 		JSONObject actualSchema = JsonSchemaObject.Builder.create()
 				.withProperty("foo", JsonSchemaString.Builder.create().withMinLength(2).withRequired().build()).build()

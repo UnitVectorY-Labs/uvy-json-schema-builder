@@ -33,6 +33,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final Map<String, JsonSchemaBuilder> properties;
 
+	private final Map<String, JsonSchemaBuilder> patternProperties;
+
 	private final Boolean additionalProperties;
 
 	private final Integer minProperties;
@@ -41,9 +43,14 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private JsonSchemaObject(Builder builder) {
 		this.required = builder.required;
+
 		Map<String, JsonSchemaBuilder> propertiesMap = new HashMap<String, JsonSchemaBuilder>();
 		propertiesMap.putAll(builder.properties);
 		this.properties = Collections.unmodifiableMap(propertiesMap);
+
+		Map<String, JsonSchemaBuilder> patternPropertiesMap = new HashMap<String, JsonSchemaBuilder>();
+		patternPropertiesMap.putAll(builder.patternProperties);
+		this.patternProperties = Collections.unmodifiableMap(patternPropertiesMap);
 
 		this.additionalProperties = builder.additionalProperties;
 
@@ -64,6 +71,19 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 			for (Entry<String, JsonSchemaBuilder> entry : this.properties.entrySet()) {
 				propertiesObj.put(entry.getKey(), entry.getValue().schema());
+
+				if (entry.getValue().isRequired()) {
+					required.add(entry.getKey());
+				}
+			}
+		}
+
+		if (this.patternProperties.size() > 0) {
+			JSONObject patternPropertiesObj = new JSONObject();
+			json.put("patternProperties", patternPropertiesObj);
+
+			for (Entry<String, JsonSchemaBuilder> entry : this.patternProperties.entrySet()) {
+				patternPropertiesObj.put(entry.getKey(), entry.getValue().schema());
 
 				if (entry.getValue().isRequired()) {
 					required.add(entry.getKey());
@@ -105,6 +125,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		private Map<String, JsonSchemaBuilder> properties;
 
+		private Map<String, JsonSchemaBuilder> patternProperties;
+
 		private Boolean additionalProperties;
 
 		private Integer minProperties;
@@ -113,6 +135,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		private Builder() {
 			this.properties = new HashMap<String, JsonSchemaBuilder>();
+			this.patternProperties = new HashMap<String, JsonSchemaBuilder>();
 		}
 
 		public static Builder create() {
@@ -132,6 +155,17 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			}
 
 			this.properties.put(name, jsonSchemaString);
+			return this;
+		}
+
+		public Builder withPatternProperty(String name, JsonSchemaString jsonSchemaString) {
+			if (name == null) {
+				throw new IllegalArgumentException("name must not be null");
+			} else if (jsonSchemaString == null) {
+				throw new IllegalArgumentException("jsonSchemaString must not be null");
+			}
+
+			this.patternProperties.put(name, jsonSchemaString);
 			return this;
 		}
 
