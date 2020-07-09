@@ -35,6 +35,10 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final Boolean additionalProperties;
 
+	private final Integer minProperties;
+
+	private final Integer maxProperties;
+
 	private JsonSchemaObject(Builder builder) {
 		this.required = builder.required;
 		Map<String, JsonSchemaBuilder> propertiesMap = new HashMap<String, JsonSchemaBuilder>();
@@ -42,6 +46,9 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		this.properties = Collections.unmodifiableMap(propertiesMap);
 
 		this.additionalProperties = builder.additionalProperties;
+
+		this.minProperties = builder.minProperties;
+		this.maxProperties = builder.maxProperties;
 	}
 
 	@Override
@@ -77,6 +84,14 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			json.put("additionalProperties", this.additionalProperties.booleanValue());
 		}
 
+		if (this.minProperties != null) {
+			json.put("minProperties", this.minProperties.intValue());
+		}
+
+		if (this.maxProperties != null) {
+			json.put("maxProperties", this.maxProperties.intValue());
+		}
+
 		return json;
 	}
 
@@ -91,6 +106,10 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		private Map<String, JsonSchemaBuilder> properties;
 
 		private Boolean additionalProperties;
+
+		private Integer minProperties;
+
+		private Integer maxProperties;
 
 		private Builder() {
 			this.properties = new HashMap<String, JsonSchemaBuilder>();
@@ -118,6 +137,16 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		public Builder withAdditionalProperties(boolean additionalProperties) {
 			this.additionalProperties = additionalProperties;
+			return this;
+		}
+
+		public Builder withMinProperties(int minProperties) {
+			this.minProperties = minProperties;
+			return this;
+		}
+
+		public Builder withMaxProperties(int maxProperties) {
+			this.maxProperties = maxProperties;
 			return this;
 		}
 

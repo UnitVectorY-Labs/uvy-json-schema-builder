@@ -29,6 +29,20 @@ public class JsonSchemaObjectTest {
 	}
 
 	@Test
+	public void testEmptyMinProperties() {
+		JSONObject actualSchema = JsonSchemaObject.Builder.create().withMinProperties(30).build().schema();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"minProperties\":30}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testEmptyMaxProperties() {
+		JSONObject actualSchema = JsonSchemaObject.Builder.create().withMaxProperties(3).build().schema();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"maxProperties\":3}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmptyNoAdditionalProperties() {
 		JSONObject actualSchema = JsonSchemaObject.Builder.create().withAdditionalProperties(false).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"additionalProperties\":false}");
