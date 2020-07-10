@@ -58,4 +58,12 @@ public class JsonSchemaStringTest extends JsonSchemaBuilderTest {
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"pattern\":\".*\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
+
+	@Test
+	public void testEnum() {
+		JSONObject actualSchema = JsonSchemaString.Builder.create().withEnumValue("A").withEnumValue("B").build()
+				.schema();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"enum\":[\"A\",\"B\"]}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
 }
