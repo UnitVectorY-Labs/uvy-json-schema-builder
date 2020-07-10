@@ -19,7 +19,17 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class JsonSchemaNumberTest {
+public class JsonSchemaNumberTest extends JsonSchemaBuilderTest {
+
+	@Override
+	JsonSchemaBuilder getRequired() {
+		return JsonSchemaNumber.Builder.create().withRequired().build();
+	}
+
+	@Override
+	JsonSchemaBuilder getNotRequired() {
+		return JsonSchemaNumber.Builder.create().build();
+	}
 
 	@Test
 	public void testEmpty() {

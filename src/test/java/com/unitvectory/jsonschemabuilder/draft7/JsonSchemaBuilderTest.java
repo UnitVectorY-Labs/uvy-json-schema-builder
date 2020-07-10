@@ -15,27 +15,31 @@
  */
 package com.unitvectory.jsonschemabuilder.draft7;
 
-import org.json.JSONObject;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
 
-public class JsonSchemaBooleanTest extends JsonSchemaBuilderTest {
+public abstract class JsonSchemaBuilderTest {
 
-	@Override
-	JsonSchemaBuilder getRequired() {
-		return JsonSchemaBoolean.Builder.create().withRequired().build();
-	}
+	abstract JsonSchemaBuilder getRequired();
 
-	@Override
-	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaBoolean.Builder.create().build();
+	abstract JsonSchemaBuilder getNotRequired();
+
+	@Test
+	public void testRequired() {
+		JsonSchemaBuilder builder = this.getRequired();
+		assertNotNull(builder);
+
+		assertTrue(builder.isRequired());
 	}
 
 	@Test
-	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaBoolean.Builder.create().build().schema();
-		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\"}");
-		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
-	}
+	public void testNotRequired() {
+		JsonSchemaBuilder builder = this.getNotRequired();
+		assertNotNull(builder);
 
+		assertFalse(builder.isRequired());
+	}
 }

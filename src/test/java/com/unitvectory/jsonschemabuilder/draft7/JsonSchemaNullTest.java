@@ -19,23 +19,22 @@ import org.json.JSONObject;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
-public class JsonSchemaBooleanTest extends JsonSchemaBuilderTest {
+public class JsonSchemaNullTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaBoolean.Builder.create().withRequired().build();
+		return JsonSchemaNull.Builder.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaBoolean.Builder.create().build();
+		return JsonSchemaNull.Builder.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaBoolean.Builder.create().build().schema();
-		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\"}");
+		JSONObject actualSchema = JsonSchemaNull.Builder.create().build().schema();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"null\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
-
 }
