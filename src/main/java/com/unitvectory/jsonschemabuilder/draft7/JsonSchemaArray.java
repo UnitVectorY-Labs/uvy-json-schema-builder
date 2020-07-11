@@ -16,6 +16,8 @@
 package com.unitvectory.jsonschemabuilder.draft7;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +32,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 
 	private final JsonSchemaBuilder itemValidation;
 
-	private final ArrayList<JsonSchemaBuilder> itemTuple;
+	private final List<JsonSchemaBuilder> itemTuple;
 
 	private final Boolean additionalItems;
 
@@ -48,7 +50,14 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		this.contains = builder.contains;
 
 		this.itemValidation = builder.itemValidation;
-		this.itemTuple = builder.itemTuple;
+
+		if (builder.itemTuple != null) {
+			List<JsonSchemaBuilder> itemTupleList = new ArrayList<>();
+			itemTupleList.addAll(builder.itemTuple);
+			this.itemTuple = Collections.unmodifiableList(itemTupleList);
+		} else {
+			this.itemTuple = null;
+		}
 
 		this.additionalItems = builder.additionalItems;
 		this.additionalItemsSchema = builder.additionalItemsSchema;
@@ -114,7 +123,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 
 		private JsonSchemaBuilder itemValidation;
 
-		private ArrayList<JsonSchemaBuilder> itemTuple;
+		private List<JsonSchemaBuilder> itemTuple;
 
 		private Boolean additionalItems;
 
