@@ -23,17 +23,17 @@ public class JsonSchemaNullTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaNull.Builder.create().withRequired().build();
+		return JsonSchemaNull.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaNull.Builder.create().build();
+		return JsonSchemaNull.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaNull.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaNull.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"null\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}

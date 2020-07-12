@@ -58,6 +58,10 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		this.maxProperties = builder.maxProperties;
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	@Override
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
@@ -136,10 +140,6 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		private Builder() {
 			this.properties = new HashMap<String, JsonSchemaBuilder>();
 			this.patternProperties = new HashMap<String, JsonSchemaBuilder>();
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

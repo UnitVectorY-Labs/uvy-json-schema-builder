@@ -23,46 +23,46 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaObject.Builder.create().withRequired().build();
+		return JsonSchemaObject.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaObject.Builder.create().build();
+		return JsonSchemaObject.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaObject.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEmptyMinProperties() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create().withMinProperties(30).build().schema();
+		JSONObject actualSchema = JsonSchemaObject.create().withMinProperties(30).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"minProperties\":30}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEmptyMaxProperties() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create().withMaxProperties(3).build().schema();
+		JSONObject actualSchema = JsonSchemaObject.create().withMaxProperties(3).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"maxProperties\":3}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEmptyNoAdditionalProperties() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create().withAdditionalProperties(false).build().schema();
+		JSONObject actualSchema = JsonSchemaObject.create().withAdditionalProperties(false).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"additionalProperties\":false}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testString() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create()
-				.withProperty("foo", JsonSchemaString.Builder.create().withMinLength(2).build()).build().schema();
+		JSONObject actualSchema = JsonSchemaObject.create()
+				.withProperty("foo", JsonSchemaString.create().withMinLength(2).build()).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"object\",\"properties\":{\"foo\":{\"minLength\":2,\"type\":\"string\"}}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
@@ -70,9 +70,8 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testPatternString() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create()
-				.withPatternProperty("^S_", JsonSchemaString.Builder.create().withMinLength(2).build()).build()
-				.schema();
+		JSONObject actualSchema = JsonSchemaObject.create()
+				.withPatternProperty("^S_", JsonSchemaString.create().withMinLength(2).build()).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"object\",\"patternProperties\":{\"^S_\":{\"minLength\":2,\"type\":\"string\"}}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
@@ -80,8 +79,8 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testStringRequired() {
-		JSONObject actualSchema = JsonSchemaObject.Builder.create()
-				.withProperty("foo", JsonSchemaString.Builder.create().withMinLength(2).withRequired().build()).build()
+		JSONObject actualSchema = JsonSchemaObject.create()
+				.withProperty("foo", JsonSchemaString.create().withMinLength(2).withRequired().build()).build()
 				.schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"object\",\"properties\":{\"foo\":{\"minLength\":2,\"type\":\"string\"}},\"required\":[\"foo\"]}");

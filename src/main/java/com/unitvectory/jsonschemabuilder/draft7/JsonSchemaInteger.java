@@ -42,6 +42,10 @@ public class JsonSchemaInteger extends JsonSchemaBuilder {
 		this.exclusiveMaximum = builder.exclusiveMaximum;
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
@@ -88,10 +92,6 @@ public class JsonSchemaInteger extends JsonSchemaBuilder {
 		private Integer exclusiveMaximum;
 
 		private Builder() {
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

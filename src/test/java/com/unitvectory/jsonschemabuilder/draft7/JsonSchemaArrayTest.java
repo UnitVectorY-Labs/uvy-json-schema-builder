@@ -23,42 +23,40 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaArray.Builder.create().withRequired().build();
+		return JsonSchemaArray.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaArray.Builder.create().build();
+		return JsonSchemaArray.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testItemNumber() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create().withItem(JsonSchemaNumber.Builder.create().build())
-				.build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create().withItem(JsonSchemaNumber.create().build()).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\",\"items\":{\"type\":\"number\"}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testContainsNumber() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create()
-				.withContains(JsonSchemaNumber.Builder.create().build()).build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create().withContains(JsonSchemaNumber.create().build()).build()
+				.schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\",\"contains\":{\"type\":\"number\"}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testTupleNumber() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create()
-				.withItemTuple(JsonSchemaNumber.Builder.create().build(), JsonSchemaString.Builder.create().build())
-				.build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create()
+				.withItemTuple(JsonSchemaNumber.create().build(), JsonSchemaString.create().build()).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"array\",\"items\":[{\"type\":\"number\"},{\"type\":\"string\"}]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
@@ -66,8 +64,8 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testTupleNumberAdditionalItemsFalse() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create()
-				.withItemTuple(JsonSchemaNumber.Builder.create().build(), JsonSchemaString.Builder.create().build())
+		JSONObject actualSchema = JsonSchemaArray.create()
+				.withItemTuple(JsonSchemaNumber.create().build(), JsonSchemaString.create().build())
 				.withAdditionalItems(false).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"array\",\"items\":[{\"type\":\"number\"},{\"type\":\"string\"}],\"additionalItems\":false}");
@@ -76,8 +74,8 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testTupleNumberAdditionalItemsTrue() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create()
-				.withItemTuple(JsonSchemaNumber.Builder.create().build(), JsonSchemaString.Builder.create().build())
+		JSONObject actualSchema = JsonSchemaArray.create()
+				.withItemTuple(JsonSchemaNumber.create().build(), JsonSchemaString.create().build())
 				.withAdditionalItems(true).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"array\",\"items\":[{\"type\":\"number\"},{\"type\":\"string\"}],\"additionalItems\":true}");
@@ -86,9 +84,9 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testTupleNumberAdditionalItemsString() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create()
-				.withItemTuple(JsonSchemaNumber.Builder.create().build(), JsonSchemaString.Builder.create().build())
-				.withAdditionalItems(JsonSchemaString.Builder.create().build()).build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create()
+				.withItemTuple(JsonSchemaNumber.create().build(), JsonSchemaString.create().build())
+				.withAdditionalItems(JsonSchemaString.create().build()).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"type\":\"array\",\"items\":[{\"type\":\"number\"},{\"type\":\"string\"}],\"additionalItems\":{\"type\":\"string\"}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
@@ -96,14 +94,14 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testLength() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create().withMinItems(2).withMaxItems(3).build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create().withMinItems(2).withMaxItems(3).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\",\"minItems\":2,\"maxItems\":3}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testUniqueness() {
-		JSONObject actualSchema = JsonSchemaArray.Builder.create().withUniqueItems(true).build().schema();
+		JSONObject actualSchema = JsonSchemaArray.create().withUniqueItems(true).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\",\"uniqueItems\":true}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}

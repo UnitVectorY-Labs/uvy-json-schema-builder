@@ -28,6 +28,10 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 		this.not = builder.not;
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 
@@ -50,10 +54,6 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 
 		private Builder() {
 			this.required = false;
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

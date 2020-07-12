@@ -23,19 +23,18 @@ public class JsonSchemaAnyOfTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaAnyOf.Builder.create().withRequired().build();
+		return JsonSchemaAnyOf.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaAnyOf.Builder.create().build();
+		return JsonSchemaAnyOf.create().build();
 	}
 
 	@Test
 	public void testAnyOf() {
-		JSONObject actualSchema = JsonSchemaAnyOf.Builder.create()
-				.withAnyOf(JsonSchemaString.Builder.create().withMaxLength(5).build())
-				.withAnyOf(JsonSchemaNumber.Builder.create().withMinimum(0).build()).build().schema();
+		JSONObject actualSchema = JsonSchemaAnyOf.create().withAnyOf(JsonSchemaString.create().withMaxLength(5).build())
+				.withAnyOf(JsonSchemaNumber.create().withMinimum(0).build()).build().schema();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"anyOf\":[{\"type\":\"string\",\"maxLength\":5},{\"type\":\"number\",\"minimum\":0}]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);

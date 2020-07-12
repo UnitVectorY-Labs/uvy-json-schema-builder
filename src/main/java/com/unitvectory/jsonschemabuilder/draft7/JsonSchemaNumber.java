@@ -57,6 +57,10 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		this.exclusiveMaximumD = builder.exclusiveMaximumD;
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
@@ -123,10 +127,6 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		private Double exclusiveMaximumD;
 
 		private Builder() {
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

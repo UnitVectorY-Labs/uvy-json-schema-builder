@@ -23,18 +23,17 @@ public class JsonSchemaNotTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaNot.Builder.create().withRequired().build();
+		return JsonSchemaNot.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaNot.Builder.create().build();
+		return JsonSchemaNot.create().build();
 	}
 
 	@Test
 	public void testNotBoolean() {
-		JSONObject actualSchema = JsonSchemaNot.Builder.create().withNot(JsonSchemaBoolean.Builder.create().build())
-				.build().schema();
+		JSONObject actualSchema = JsonSchemaNot.create().withNot(JsonSchemaBoolean.create().build()).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"not\":{\"type\":\"boolean\"}}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}

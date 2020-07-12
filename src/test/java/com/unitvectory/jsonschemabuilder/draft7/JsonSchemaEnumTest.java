@@ -25,40 +25,38 @@ public class JsonSchemaEnumTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaEnum.Builder.create().withRequired().build();
+		return JsonSchemaEnum.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaEnum.Builder.create().build();
+		return JsonSchemaEnum.create().build();
 	}
 
 	@Test
 	public void testEnumString() {
-		JSONObject actualSchema = JsonSchemaEnum.Builder.create().withEnumValue("A").withEnumValue("B").build()
-				.schema();
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withEnumValue("B").build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\",\"B\"]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEnumInteger() {
-		JSONObject actualSchema = JsonSchemaEnum.Builder.create().withEnumValue(2).withEnumValue(1).build().schema();
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue(2).withEnumValue(1).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[1, 2]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEnumDouble() {
-		JSONObject actualSchema = JsonSchemaEnum.Builder.create().withEnumValue(2.3).withEnumValue(1.4).build()
-				.schema();
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue(2.3).withEnumValue(1.4).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[1.4, 2.3]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEnumNull() {
-		JSONObject actualSchema = JsonSchemaEnum.Builder.create().withNull().build().schema();
+		JSONObject actualSchema = JsonSchemaEnum.create().withNull().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[null]}");
 
 		// JSONAssert.assertEquals(expectedSchema, actualSchema, true);
@@ -69,7 +67,7 @@ public class JsonSchemaEnumTest extends JsonSchemaBuilderTest {
 
 	@Test
 	public void testEnumNothing() {
-		JSONObject actualSchema = JsonSchemaEnum.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaEnum.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[null]}");
 
 		// JSONAssert.assertEquals(expectedSchema, actualSchema, true);

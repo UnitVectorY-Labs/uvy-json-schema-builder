@@ -47,6 +47,10 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		this.enumSet = Collections.unmodifiableSet(enumSetCopy);
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
@@ -93,10 +97,6 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 
 		private Builder() {
 			this.enumSet = new TreeSet<String>();
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

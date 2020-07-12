@@ -36,6 +36,10 @@ public class JsonSchemaAllOf extends JsonSchemaBuilder {
 		this.allOf = Collections.unmodifiableList(allOfList);
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 
@@ -62,10 +66,6 @@ public class JsonSchemaAllOf extends JsonSchemaBuilder {
 		private Builder() {
 			this.required = false;
 			this.allOf = new ArrayList<JsonSchemaBuilder>();
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

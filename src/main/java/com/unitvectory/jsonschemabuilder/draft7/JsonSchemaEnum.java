@@ -52,6 +52,10 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 		this.enumNull = builder.enumNull;
 	}
 
+	public static Builder create() {
+		return new Builder();
+	}
+
 	JSONObject schema() {
 		JSONObject json = new JSONObject();
 
@@ -106,10 +110,6 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 			this.enumInteger = new TreeSet<Integer>();
 			this.enumDouble = new TreeSet<Double>();
 			this.enumNull = false;
-		}
-
-		public static Builder create() {
-			return new Builder();
 		}
 
 		public Builder withRequired() {

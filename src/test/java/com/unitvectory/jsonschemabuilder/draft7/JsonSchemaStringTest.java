@@ -23,46 +23,45 @@ public class JsonSchemaStringTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaString.Builder.create().withRequired().build();
+		return JsonSchemaString.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaString.Builder.create().build();
+		return JsonSchemaString.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaString.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinLength() {
-		JSONObject actualSchema = JsonSchemaString.Builder.create().withMinLength(10).build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withMinLength(10).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"minLength\":10}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaxLength() {
-		JSONObject actualSchema = JsonSchemaString.Builder.create().withMaxLength(10).build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withMaxLength(10).build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"maxLength\":10}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testPattern() {
-		JSONObject actualSchema = JsonSchemaString.Builder.create().withPattern(".*").build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withPattern(".*").build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"pattern\":\".*\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEnum() {
-		JSONObject actualSchema = JsonSchemaString.Builder.create().withEnumValue("A").withEnumValue("B").build()
-				.schema();
+		JSONObject actualSchema = JsonSchemaString.create().withEnumValue("A").withEnumValue("B").build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"enum\":[\"A\",\"B\"]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}

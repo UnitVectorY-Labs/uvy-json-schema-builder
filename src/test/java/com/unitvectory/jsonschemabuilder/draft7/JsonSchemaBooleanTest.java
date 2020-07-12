@@ -23,17 +23,17 @@ public class JsonSchemaBooleanTest extends JsonSchemaBuilderTest {
 
 	@Override
 	JsonSchemaBuilder getRequired() {
-		return JsonSchemaBoolean.Builder.create().withRequired().build();
+		return JsonSchemaBoolean.create().withRequired().build();
 	}
 
 	@Override
 	JsonSchemaBuilder getNotRequired() {
-		return JsonSchemaBoolean.Builder.create().build();
+		return JsonSchemaBoolean.create().build();
 	}
 
 	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaBoolean.Builder.create().build().schema();
+		JSONObject actualSchema = JsonSchemaBoolean.create().build().schema();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
