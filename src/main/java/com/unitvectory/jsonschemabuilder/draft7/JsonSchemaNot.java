@@ -28,6 +28,12 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 		this.not = builder.not;
 	}
 
+	/**
+	 * The not keyword declares that a instance validates if it doesn’t validate
+	 * against the given subschema.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -56,6 +62,13 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 			this.required = false;
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;

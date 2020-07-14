@@ -107,4 +107,14 @@ public class JsonSchemaNumberTest extends JsonSchemaBuilderTest {
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"exclusiveMaximum\":7.4}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMultipleOfNegativeInt() {
+		JsonSchemaNumber.create().withMultipleOf(-1).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMultipleOfNegativeDouble() {
+		JsonSchemaNumber.create().withMultipleOf(-1.1).build().schema();
+	}
 }

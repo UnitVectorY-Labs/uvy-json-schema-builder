@@ -36,6 +36,12 @@ public class JsonSchemaAnyOf extends JsonSchemaBuilder {
 		this.anyOf = Collections.unmodifiableList(anyOfList);
 	}
 
+	/**
+	 * To validate against anyOf, the given data must be valid against any (one or
+	 * more) of the given subschemas.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -68,6 +74,13 @@ public class JsonSchemaAnyOf extends JsonSchemaBuilder {
 			this.anyOf = new ArrayList<JsonSchemaBuilder>();
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;

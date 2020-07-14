@@ -27,6 +27,11 @@ public class JsonSchemaBoolean extends JsonSchemaBuilder {
 		this.required = builder.required;
 	}
 
+	/**
+	 * The boolean type matches only two special values: true and false.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -50,6 +55,13 @@ public class JsonSchemaBoolean extends JsonSchemaBuilder {
 			this.required = false;
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;

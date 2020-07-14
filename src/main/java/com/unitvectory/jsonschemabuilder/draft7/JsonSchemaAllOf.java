@@ -36,6 +36,12 @@ public class JsonSchemaAllOf extends JsonSchemaBuilder {
 		this.allOf = Collections.unmodifiableList(allOfList);
 	}
 
+	/**
+	 * To validate against allOf, the given data must be valid against all of the
+	 * given subschemas.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -68,6 +74,13 @@ public class JsonSchemaAllOf extends JsonSchemaBuilder {
 			this.allOf = new ArrayList<JsonSchemaBuilder>();
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;

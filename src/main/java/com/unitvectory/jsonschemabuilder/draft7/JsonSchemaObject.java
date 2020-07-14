@@ -35,7 +35,13 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final Map<String, JsonSchemaBuilder> patternProperties;
 
+	// TODO: Add propertyNames
+
+	// TODO: Add dependencies
+
 	private final Boolean additionalProperties;
+
+	private final JsonSchemaBuilder additionalPropertiesObj;
 
 	private final Integer minProperties;
 
@@ -53,11 +59,19 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		this.patternProperties = Collections.unmodifiableMap(patternPropertiesMap);
 
 		this.additionalProperties = builder.additionalProperties;
+		this.additionalPropertiesObj = builder.additionalPropertiesObj;
 
 		this.minProperties = builder.minProperties;
 		this.maxProperties = builder.maxProperties;
 	}
 
+	/**
+	 * Objects are the mapping type in JSON. They map “keys” to “values”. In JSON,
+	 * the “keys” must always be strings. Each of these pairs is conventionally
+	 * referred to as a “property”.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -106,6 +120,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		if (this.additionalProperties != null) {
 			json.put("additionalProperties", this.additionalProperties.booleanValue());
+		} else if (additionalPropertiesObj != null) {
+			json.put("additionalProperties", this.additionalPropertiesObj.schema());
 		}
 
 		if (this.minProperties != null) {
@@ -133,6 +149,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		private Boolean additionalProperties;
 
+		private JsonSchemaBuilder additionalPropertiesObj;
+
 		private Integer minProperties;
 
 		private Integer maxProperties;
@@ -142,44 +160,112 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			this.patternProperties = new HashMap<String, JsonSchemaBuilder>();
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;
 		}
 
-		public Builder withProperty(String name, JsonSchemaString jsonSchemaString) {
+		/**
+		 * The properties (key-value pairs) on an object are defined using the
+		 * properties keyword.
+		 * 
+		 * @param name
+		 * @param jsonSchemaBuilder
+		 * @return
+		 */
+		public Builder withProperty(String name, JsonSchemaBuilder jsonSchemaBuilder) {
 			if (name == null) {
 				throw new IllegalArgumentException("name must not be null");
-			} else if (jsonSchemaString == null) {
-				throw new IllegalArgumentException("jsonSchemaString must not be null");
+			} else if (jsonSchemaBuilder == null) {
+				throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
 			}
 
-			this.properties.put(name, jsonSchemaString);
+			this.properties.put(name, jsonSchemaBuilder);
 			return this;
 		}
 
-		public Builder withPatternProperty(String name, JsonSchemaString jsonSchemaString) {
+		/**
+		 * Pattern property maps from regular expressions to schemas. If an additional
+		 * property matches a given regular expression, it must also validate against
+		 * the corresponding schema.
+		 * 
+		 * @param name
+		 * @param jsonSchemaBuilder
+		 * @return
+		 */
+		public Builder withPatternProperty(String name, JsonSchemaBuilder jsonSchemaBuilder) {
 			if (name == null) {
 				throw new IllegalArgumentException("name must not be null");
-			} else if (jsonSchemaString == null) {
-				throw new IllegalArgumentException("jsonSchemaString must not be null");
+			} else if (jsonSchemaBuilder == null) {
+				throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
 			}
 
-			this.patternProperties.put(name, jsonSchemaString);
+			this.patternProperties.put(name, jsonSchemaBuilder);
 			return this;
 		}
 
+		/**
+		 * The additionalProperties keyword is used to control the handling of extra
+		 * stuff, that is, properties whose names are not listed in the properties
+		 * keyword. By default any additional properties are allowed.
+		 * 
+		 * @param additionalProperties
+		 * @return
+		 */
 		public Builder withAdditionalProperties(boolean additionalProperties) {
 			this.additionalProperties = additionalProperties;
+			this.additionalPropertiesObj = null;
 			return this;
 		}
 
+		/**
+		 * If additionalProperties is an object, that object is a schema that will be
+		 * used to validate any additional properties not listed in properties.
+		 * 
+		 * @param additionalProperties
+		 * @return
+		 */
+		public Builder withAdditionalProperties(JsonSchemaBuilder additionalProperties) {
+			this.additionalProperties = null;
+			this.additionalPropertiesObj = additionalProperties;
+			return this;
+		}
+
+		/**
+		 * The number of properties on an object can be restricted using the
+		 * minProperties keyword. Each of these must be a non-negative integer.
+		 * 
+		 * @param minProperties
+		 * @return
+		 */
 		public Builder withMinProperties(int minProperties) {
+			if (minProperties < 0) {
+				throw new IllegalArgumentException("minProperties must be non-negative");
+			}
+
 			this.minProperties = minProperties;
 			return this;
 		}
 
+		/**
+		 * The number of properties on an object can be restricted using the
+		 * maxProperties keywords. Each of these must be a non-negative integer.
+		 * 
+		 * @param maxProperties
+		 * @return
+		 */
 		public Builder withMaxProperties(int maxProperties) {
+			if (maxProperties < 0) {
+				throw new IllegalArgumentException("minProperties must be non-negative");
+			}
+
 			this.maxProperties = maxProperties;
 			return this;
 		}

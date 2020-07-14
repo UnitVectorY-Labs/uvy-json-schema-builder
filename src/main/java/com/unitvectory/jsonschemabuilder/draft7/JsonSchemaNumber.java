@@ -57,6 +57,12 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		this.exclusiveMaximumD = builder.exclusiveMaximumD;
 	}
 
+	/**
+	 * The number type is used for any numeric type, either integers or floating
+	 * point numbers.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -129,65 +135,142 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		private Builder() {
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;
 		}
 
+		/**
+		 * Numbers can be restricted to a multiple of a given number, using the
+		 * multipleOf keyword. It may be set to any positive number.
+		 * 
+		 * @param multipleOf
+		 * @return
+		 */
 		public Builder withMultipleOf(int multipleOf) {
+			if (multipleOf <= 0) {
+				throw new IllegalArgumentException("multipleOf must be positive");
+			}
+
 			this.multipleOfI = multipleOf;
 			this.multipleOfD = null;
 			return this;
 		}
 
+		/**
+		 * Numbers can be restricted to a multiple of a given number, using the
+		 * multipleOf keyword. It may be set to any positive number.
+		 * 
+		 * @param multipleOf
+		 * @return
+		 */
 		public Builder withMultipleOf(double multipleOf) {
+			if (multipleOf <= 0) {
+				throw new IllegalArgumentException("multipleOf must be positive");
+			}
+
 			this.multipleOfD = multipleOf;
 			this.multipleOfI = null;
 			return this;
 		}
 
+		/**
+		 * The minimum
+		 * 
+		 * @param minimum
+		 * @return
+		 */
 		public Builder withMinimum(int minimum) {
 			this.minimumI = minimum;
 			this.minimumD = null;
 			return this;
 		}
 
+		/**
+		 * The minimum
+		 * 
+		 * @param minimum
+		 * @return
+		 */
 		public Builder withMinimum(double minimum) {
 			this.minimumD = minimum;
 			this.minimumI = null;
 			return this;
 		}
 
+		/**
+		 * The exclusive minimum
+		 * 
+		 * @param exclusiveMinimum
+		 * @return
+		 */
 		public Builder withExclusiveMinimum(int exclusiveMinimum) {
 			this.exclusiveMinimumI = exclusiveMinimum;
 			this.exclusiveMinimumD = null;
 			return this;
 		}
 
+		/**
+		 * The exclusive minimum
+		 * 
+		 * @param exclusiveMinimum
+		 * @return
+		 */
 		public Builder withExclusiveMinimum(double exclusiveMinimum) {
 			this.exclusiveMinimumD = exclusiveMinimum;
 			this.exclusiveMinimumI = null;
 			return this;
 		}
 
+		/**
+		 * The maximum
+		 * 
+		 * @param maximum
+		 * @return
+		 */
 		public Builder withMaximum(int maximum) {
 			this.maximumI = maximum;
 			this.maximumD = null;
 			return this;
 		}
 
+		/**
+		 * The maximum
+		 * 
+		 * @param maximum
+		 * @return
+		 */
 		public Builder withMaximum(double maximum) {
 			this.maximumD = maximum;
 			this.maximumI = null;
 			return this;
 		}
 
+		/**
+		 * The exclusive maximum
+		 * 
+		 * @param exclusiveMaximum
+		 * @return
+		 */
 		public Builder withExclusiveMaximum(int exclusiveMaximum) {
 			this.exclusiveMaximumI = exclusiveMaximum;
 			this.exclusiveMaximumD = null;
 			return this;
 		}
 
+		/**
+		 * The exclusive maximum
+		 * 
+		 * @param exclusiveMaximum
+		 * @return
+		 */
 		public Builder withExclusiveMaximum(double exclusiveMaximum) {
 			this.exclusiveMaximumD = exclusiveMaximum;
 			this.exclusiveMaximumI = null;

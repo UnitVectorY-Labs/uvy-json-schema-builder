@@ -72,4 +72,9 @@ public class JsonSchemaIntegerTest extends JsonSchemaBuilderTest {
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"exclusiveMaximum\":7}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMultipleOfNegative() {
+		JsonSchemaInteger.create().withMultipleOf(-1).build().schema();
+	}
 }

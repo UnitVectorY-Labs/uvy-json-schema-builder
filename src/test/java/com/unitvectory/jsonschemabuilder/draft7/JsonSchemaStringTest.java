@@ -65,4 +65,14 @@ public class JsonSchemaStringTest extends JsonSchemaBuilderTest {
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"enum\":[\"A\",\"B\"]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMinLength() {
+		JsonSchemaString.create().withMinLength(-1).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMaxLength() {
+		JsonSchemaString.create().withMaxLength(-1).build().schema();
+	}
 }

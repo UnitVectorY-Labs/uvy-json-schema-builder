@@ -47,6 +47,12 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		this.enumSet = Collections.unmodifiableSet(enumSetCopy);
 	}
 
+	/**
+	 * The string type is used for strings of text. It may contain Unicode
+	 * characters.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -99,26 +105,70 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 			this.enumSet = new TreeSet<String>();
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;
 		}
 
+		/**
+		 * The length of a string can be constrained using the minLength keywords. For
+		 * both keywords, the value must be a non-negative number.
+		 * 
+		 * @param minLength
+		 * @return
+		 */
 		public Builder withMinLength(int minLength) {
+			if (minLength < 0) {
+				throw new IllegalArgumentException("minLength must be non-negative");
+			}
+
 			this.minLength = minLength;
 			return this;
 		}
 
+		/**
+		 * The length of a string can be constrained using the maxLength keywords. For
+		 * both keywords, the value must be a non-negative number.
+		 * 
+		 * @param maxLength
+		 * @return
+		 */
 		public Builder withMaxLength(int maxLength) {
+			if (maxLength < 0) {
+				throw new IllegalArgumentException("maxLength must be non-negative");
+			}
+
 			this.maxLength = maxLength;
 			return this;
 		}
 
+		/**
+		 * The pattern keyword is used to restrict a string to a particular regular
+		 * expression. The regular expression syntax is the one defined in JavaScript
+		 * (ECMA 262 specifically).
+		 * 
+		 * @param pattern
+		 * @return
+		 */
 		public Builder withPattern(String pattern) {
 			this.pattern = pattern;
 			return this;
 		}
 
+		/**
+		 * The enum keyword is used to restrict a value to a fixed set of values. It
+		 * must be an array with at least one element, where each element is unique.
+		 * 
+		 * @param enumValue
+		 * @return
+		 */
 		public Builder withEnumValue(String enumValue) {
 			if (enumValue == null) {
 				return this;

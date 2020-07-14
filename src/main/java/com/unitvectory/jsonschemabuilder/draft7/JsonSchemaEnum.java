@@ -52,6 +52,12 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 		this.enumNull = builder.enumNull;
 	}
 
+	/**
+	 * The enum keyword is used to restrict a value to a fixed set of values. It
+	 * must be an array with at least one element, where each element is unique.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -112,11 +118,24 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 			this.enumNull = false;
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;
 		}
 
+		/**
+		 * Enumeration string value
+		 * 
+		 * @param enumValue
+		 * @return
+		 */
 		public Builder withEnumValue(String enumValue) {
 			if (enumValue == null) {
 				return this;
@@ -126,16 +145,33 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 			return this;
 		}
 
+		/**
+		 * Enumeration integer value
+		 * 
+		 * @param enumValue
+		 * @return
+		 */
 		public Builder withEnumValue(int enumValue) {
 			this.enumInteger.add(enumValue);
 			return this;
 		}
 
+		/**
+		 * Enumeration double value
+		 * 
+		 * @param enumValue
+		 * @return
+		 */
 		public Builder withEnumValue(double enumValue) {
 			this.enumDouble.add(enumValue);
 			return this;
 		}
 
+		/**
+		 * Enumeration null value
+		 * 
+		 * @return
+		 */
 		public Builder withNull() {
 			this.enumNull = true;
 			return this;

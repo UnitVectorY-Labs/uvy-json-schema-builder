@@ -105,4 +105,14 @@ public class JsonSchemaArrayTest extends JsonSchemaBuilderTest {
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"array\",\"uniqueItems\":true}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMinItemsNegative() {
+		JsonSchemaArray.create().withMinItems(-1).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMaxItemsNegative() {
+		JsonSchemaArray.create().withMaxItems(-1).build().schema();
+	}
 }

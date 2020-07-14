@@ -42,6 +42,11 @@ public class JsonSchemaInteger extends JsonSchemaBuilder {
 		this.exclusiveMaximum = builder.exclusiveMaximum;
 	}
 
+	/**
+	 * The integer type is used for integral numbers.
+	 * 
+	 * @return
+	 */
 	public static Builder create() {
 		return new Builder();
 	}
@@ -94,31 +99,73 @@ public class JsonSchemaInteger extends JsonSchemaBuilder {
 		private Builder() {
 		}
 
+		/**
+		 * By default, the properties defined by the properties keyword are not
+		 * required. However, one can provide a list of required properties using the
+		 * required keyword.
+		 * 
+		 * @return
+		 */
 		public Builder withRequired() {
 			this.required = true;
 			return this;
 		}
 
+		/**
+		 * Numbers can be restricted to a multiple of a given number, using the
+		 * multipleOf keyword. It may be set to any positive number.
+		 * 
+		 * @param multipleOf
+		 * @return
+		 */
 		public Builder withMultipleOf(int multipleOf) {
+			if (multipleOf <= 0) {
+				throw new IllegalArgumentException("multipleOf must be positive");
+			}
+
 			this.multipleOf = multipleOf;
 			return this;
 		}
 
+		/**
+		 * The minimum
+		 * 
+		 * @param minimum
+		 * @return
+		 */
 		public Builder withMinimum(int minimum) {
 			this.minimum = minimum;
 			return this;
 		}
 
+		/**
+		 * The exclusive minimum
+		 * 
+		 * @param exclusiveMinimum
+		 * @return
+		 */
 		public Builder withExclusiveMinimum(int exclusiveMinimum) {
 			this.exclusiveMinimum = exclusiveMinimum;
 			return this;
 		}
 
+		/**
+		 * The maximum
+		 * 
+		 * @param maximum
+		 * @return
+		 */
 		public Builder withMaximum(int maximum) {
 			this.maximum = maximum;
 			return this;
 		}
 
+		/**
+		 * The exclusive maximum
+		 * 
+		 * @param exclusiveMaximum
+		 * @return
+		 */
 		public Builder withExclusiveMaximum(int exclusiveMaximum) {
 			this.exclusiveMaximum = exclusiveMaximum;
 			return this;

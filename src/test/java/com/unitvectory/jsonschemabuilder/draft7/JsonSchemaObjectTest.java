@@ -87,4 +87,33 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithPropertyNullName() {
+		JsonSchemaObject.create().withProperty(null, JsonSchemaBoolean.create().build()).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithPropertyNullValue() {
+		JsonSchemaObject.create().withProperty("foo", null).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithPatternPropertyNullName() {
+		JsonSchemaObject.create().withPatternProperty(null, JsonSchemaBoolean.create().build()).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithPatternPropertyNullValue() {
+		JsonSchemaObject.create().withPatternProperty("foo", null).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMinProperties() {
+		JsonSchemaObject.create().withMinProperties(-1).build().schema();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testWithMaxProperties() {
+		JsonSchemaObject.create().withMaxProperties(-1).build().schema();
+	}
 }
