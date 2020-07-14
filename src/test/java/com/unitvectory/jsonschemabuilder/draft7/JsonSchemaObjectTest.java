@@ -87,6 +87,15 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
+	@Test
+	public void testPropertyNames() {
+		JSONObject actualSchema = JsonSchemaObject.create().withPropertyNames("^[A-Za-z_][A-Za-z0-9_]*$").build()
+				.schema();
+		JSONObject expectedSchema = new JSONObject(
+				"{\"type\":\"object\",\"propertyNames\":{\"pattern\":\"^[A-Za-z_][A-Za-z0-9_]*$\"}}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithPropertyNullName() {
 		JsonSchemaObject.create().withProperty(null, JsonSchemaBoolean.create().build()).build().schema();

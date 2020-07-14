@@ -35,7 +35,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final Map<String, JsonSchemaBuilder> patternProperties;
 
-	// TODO: Add propertyNames
+	private final String propertyNames;
 
 	// TODO: Add dependencies
 
@@ -60,6 +60,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		this.additionalProperties = builder.additionalProperties;
 		this.additionalPropertiesObj = builder.additionalPropertiesObj;
+
+		this.propertyNames = builder.propertyNames;
 
 		this.minProperties = builder.minProperties;
 		this.maxProperties = builder.maxProperties;
@@ -109,6 +111,13 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			}
 		}
 
+		if (this.propertyNames != null) {
+			JSONObject propertyNamesObj = new JSONObject();
+			json.put("propertyNames", propertyNamesObj);
+
+			propertyNamesObj.put("pattern", this.propertyNames);
+		}
+
 		if (required.size() > 0) {
 			JSONArray requiredArr = new JSONArray();
 			json.put("required", requiredArr);
@@ -146,6 +155,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		private Map<String, JsonSchemaBuilder> properties;
 
 		private Map<String, JsonSchemaBuilder> patternProperties;
+
+		private String propertyNames;
 
 		private Boolean additionalProperties;
 
@@ -208,6 +219,20 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			}
 
 			this.patternProperties.put(name, jsonSchemaBuilder);
+			return this;
+		}
+
+		/**
+		 * The names of properties can be validated against a schema, irrespective of
+		 * their values. This can be useful if you don’t want to enforce specific
+		 * properties, but you want to make sure that the names of those properties
+		 * follow a specific convention.
+		 * 
+		 * @param propertyNames
+		 * @return
+		 */
+		public Builder withPropertyNames(String propertyNames) {
+			this.propertyNames = propertyNames;
 			return this;
 		}
 
