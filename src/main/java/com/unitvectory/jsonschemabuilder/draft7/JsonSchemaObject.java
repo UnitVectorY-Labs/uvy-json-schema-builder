@@ -17,9 +17,11 @@ package com.unitvectory.jsonschemabuilder.draft7;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.json.JSONArray;
@@ -37,7 +39,9 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final String propertyNames;
 
-	// TODO: Add dependencies
+	private final Map<String, Set<String>> propertyDependencies;
+
+	private final Map<String, JsonSchemaObject> schemaDependencies;
 
 	private final Boolean additionalProperties;
 
@@ -62,6 +66,21 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		this.additionalPropertiesObj = builder.additionalPropertiesObj;
 
 		this.propertyNames = builder.propertyNames;
+
+		Map<String, Set<String>> propertyDependenciesMap = new TreeMap<String, Set<String>>();
+
+		for (Entry<String, Set<String>> entry : builder.propertyDependencies.entrySet()) {
+
+			Set<String> set = new TreeSet<String>();
+			set.addAll(entry.getValue());
+			propertyDependenciesMap.put(entry.getKey(), Collections.unmodifiableSet(set));
+		}
+
+		this.propertyDependencies = Collections.unmodifiableMap(propertyDependenciesMap);
+
+		Map<String, JsonSchemaObject> schemaDependenciesMap = new TreeMap<String, JsonSchemaObject>();
+		schemaDependenciesMap.putAll(builder.schemaDependencies);
+		this.schemaDependencies = Collections.unmodifiableMap(schemaDependenciesMap);
 
 		this.minProperties = builder.minProperties;
 		this.maxProperties = builder.maxProperties;
@@ -118,6 +137,26 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			propertyNamesObj.put("pattern", this.propertyNames);
 		}
 
+		if (this.propertyDependencies.size() > 0 || this.schemaDependencies.size() > 0) {
+			JSONObject dependencies = new JSONObject();
+			json.put("dependencies", dependencies);
+
+			for (Entry<String, Set<String>> entry : this.propertyDependencies.entrySet()) {
+				JSONArray set = new JSONArray();
+				for (String val : entry.getValue()) {
+					set.put(val);
+				}
+
+				dependencies.put(entry.getKey(), set);
+			}
+
+			for (Entry<String, JsonSchemaObject> entry : this.schemaDependencies.entrySet()) {
+				JSONObject dependencySchema = entry.getValue().schema();
+				dependencySchema.remove("type");
+				dependencies.put(entry.getKey(), dependencySchema);
+			}
+		}
+
 		if (required.size() > 0) {
 			JSONArray requiredArr = new JSONArray();
 			json.put("required", requiredArr);
@@ -158,6 +197,10 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		private String propertyNames;
 
+		private final Map<String, Set<String>> propertyDependencies;
+
+		private final Map<String, JsonSchemaObject> schemaDependencies;
+
 		private Boolean additionalProperties;
 
 		private JsonSchemaBuilder additionalPropertiesObj;
@@ -169,6 +212,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		private Builder() {
 			this.properties = new HashMap<String, JsonSchemaBuilder>();
 			this.patternProperties = new HashMap<String, JsonSchemaBuilder>();
+			this.propertyDependencies = new HashMap<String, Set<String>>();
+			this.schemaDependencies = new HashMap<String, JsonSchemaObject>();
 		}
 
 		/**
@@ -233,6 +278,51 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		 */
 		public Builder withPropertyNames(String propertyNames) {
 			this.propertyNames = propertyNames;
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param propertyName
+		 * @param propertyDependency
+		 * @return
+		 */
+		public Builder withPropertyDependency(String propertyName, String propertyDependency) {
+			if (propertyName == null) {
+				throw new IllegalArgumentException("propertyName must not be null");
+			} else if (propertyDependency == null) {
+				throw new IllegalArgumentException("propertyDependency must not be null");
+			}
+
+			this.schemaDependencies.remove(propertyName);
+
+			Set<String> set = this.propertyDependencies.get(propertyName);
+			if (set == null) {
+				set = new HashSet<String>();
+				this.propertyDependencies.put(propertyName, set);
+			}
+
+			set.add(propertyDependency);
+
+			return this;
+		}
+
+		/**
+		 * 
+		 * @param property
+		 * @param schemaDependency
+		 * @return
+		 */
+		public Builder withSchemaDependency(String propertyName, JsonSchemaObject schemaDependency) {
+			if (propertyName == null) {
+				throw new IllegalArgumentException("propertyName must not be null");
+			} else if (schemaDependency == null) {
+				throw new IllegalArgumentException("schemaDependency must not be null");
+			}
+
+			this.propertyDependencies.remove(propertyName);
+			this.schemaDependencies.put(propertyName, schemaDependency);
+
 			return this;
 		}
 

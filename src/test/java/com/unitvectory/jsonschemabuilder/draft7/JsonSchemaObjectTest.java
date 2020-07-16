@@ -96,6 +96,31 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
+	@Test
+	public void testPropertyDependencies() {
+		JSONObject actualSchema = JsonSchemaObject.create()
+				.withProperty("name", JsonSchemaString.create().withRequired().build())
+				.withProperty("credit_card", JsonSchemaNumber.create().build())
+				.withProperty("billing_address", JsonSchemaString.create().build())
+				.withPropertyDependency("credit_card", "billing_address").build().schema();
+		JSONObject expectedSchema = new JSONObject(
+				"{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"credit_card\":{\"type\":\"number\"},\"billing_address\":{\"type\":\"string\"}},\"required\":[\"name\"],\"dependencies\":{\"credit_card\":[\"billing_address\"]}}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testSchemaDependencies() {
+		JSONObject actualSchema = JsonSchemaObject.create()
+				.withProperty("name", JsonSchemaString.create().withRequired().build())
+				.withProperty("credit_card", JsonSchemaNumber.create().build())
+				.withSchemaDependency("credit_card", JsonSchemaObject.create()
+						.withProperty("billing_address", JsonSchemaString.create().withRequired().build()).build())
+				.build().schema();
+		JSONObject expectedSchema = new JSONObject(
+				"{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"credit_card\":{\"type\":\"number\"}},\"required\":[\"name\"],\"dependencies\":{\"credit_card\":{\"properties\":{\"billing_address\":{\"type\":\"string\"}},\"required\":[\"billing_address\"]}}}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithPropertyNullName() {
 		JsonSchemaObject.create().withProperty(null, JsonSchemaBoolean.create().build()).build().schema();
