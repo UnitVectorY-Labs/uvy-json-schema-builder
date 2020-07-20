@@ -22,7 +22,7 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonSchemaString extends JsonSchemaBuilder {
+public class JsonSchemaString extends AbstractJsonSchema {
 
 	private final JsonSchemaType type = JsonSchemaType.STRING;
 
@@ -57,7 +57,7 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
 
@@ -89,7 +89,7 @@ public class JsonSchemaString extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaString> {
 
 		private boolean required;
 

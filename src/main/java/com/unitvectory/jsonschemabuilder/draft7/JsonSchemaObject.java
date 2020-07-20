@@ -27,15 +27,15 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonSchemaObject extends JsonSchemaBuilder {
+public class JsonSchemaObject extends AbstractJsonSchema {
 
 	private final JsonSchemaType type = JsonSchemaType.OBJECT;
 
 	private final boolean required;
 
-	private final Map<String, JsonSchemaBuilder> properties;
+	private final Map<String, AbstractJsonSchema> properties;
 
-	private final Map<String, JsonSchemaBuilder> patternProperties;
+	private final Map<String, AbstractJsonSchema> patternProperties;
 
 	private final String propertyNames;
 
@@ -45,7 +45,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 	private final Boolean additionalProperties;
 
-	private final JsonSchemaBuilder additionalPropertiesObj;
+	private final AbstractJsonSchema additionalPropertiesObj;
 
 	private final Integer minProperties;
 
@@ -54,11 +54,11 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 	private JsonSchemaObject(Builder builder) {
 		this.required = builder.required;
 
-		Map<String, JsonSchemaBuilder> propertiesMap = new HashMap<String, JsonSchemaBuilder>();
+		Map<String, AbstractJsonSchema> propertiesMap = new HashMap<String, AbstractJsonSchema>();
 		propertiesMap.putAll(builder.properties);
 		this.properties = Collections.unmodifiableMap(propertiesMap);
 
-		Map<String, JsonSchemaBuilder> patternPropertiesMap = new HashMap<String, JsonSchemaBuilder>();
+		Map<String, AbstractJsonSchema> patternPropertiesMap = new HashMap<String, AbstractJsonSchema>();
 		patternPropertiesMap.putAll(builder.patternProperties);
 		this.patternProperties = Collections.unmodifiableMap(patternPropertiesMap);
 
@@ -98,7 +98,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 	}
 
 	@Override
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
 
@@ -108,8 +108,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			JSONObject propertiesObj = new JSONObject();
 			json.put("properties", propertiesObj);
 
-			for (Entry<String, JsonSchemaBuilder> entry : this.properties.entrySet()) {
-				propertiesObj.put(entry.getKey(), entry.getValue().schema());
+			for (Entry<String, AbstractJsonSchema> entry : this.properties.entrySet()) {
+				propertiesObj.put(entry.getKey(), entry.getValue().schemaJson());
 
 				if (entry.getValue().isRequired()) {
 					required.add(entry.getKey());
@@ -121,8 +121,8 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			JSONObject patternPropertiesObj = new JSONObject();
 			json.put("patternProperties", patternPropertiesObj);
 
-			for (Entry<String, JsonSchemaBuilder> entry : this.patternProperties.entrySet()) {
-				patternPropertiesObj.put(entry.getKey(), entry.getValue().schema());
+			for (Entry<String, AbstractJsonSchema> entry : this.patternProperties.entrySet()) {
+				patternPropertiesObj.put(entry.getKey(), entry.getValue().schemaJson());
 
 				if (entry.getValue().isRequired()) {
 					required.add(entry.getKey());
@@ -151,7 +151,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 			}
 
 			for (Entry<String, JsonSchemaObject> entry : this.schemaDependencies.entrySet()) {
-				JSONObject dependencySchema = entry.getValue().schema();
+				JSONObject dependencySchema = entry.getValue().schemaJson();
 				dependencySchema.remove("type");
 				dependencies.put(entry.getKey(), dependencySchema);
 			}
@@ -169,7 +169,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		if (this.additionalProperties != null) {
 			json.put("additionalProperties", this.additionalProperties.booleanValue());
 		} else if (additionalPropertiesObj != null) {
-			json.put("additionalProperties", this.additionalPropertiesObj.schema());
+			json.put("additionalProperties", this.additionalPropertiesObj.schemaJson());
 		}
 
 		if (this.minProperties != null) {
@@ -187,13 +187,13 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaObject> {
 
 		private boolean required;
 
-		private Map<String, JsonSchemaBuilder> properties;
+		private Map<String, AbstractJsonSchema> properties;
 
-		private Map<String, JsonSchemaBuilder> patternProperties;
+		private Map<String, AbstractJsonSchema> patternProperties;
 
 		private String propertyNames;
 
@@ -203,15 +203,15 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 
 		private Boolean additionalProperties;
 
-		private JsonSchemaBuilder additionalPropertiesObj;
+		private AbstractJsonSchema additionalPropertiesObj;
 
 		private Integer minProperties;
 
 		private Integer maxProperties;
 
 		private Builder() {
-			this.properties = new HashMap<String, JsonSchemaBuilder>();
-			this.patternProperties = new HashMap<String, JsonSchemaBuilder>();
+			this.properties = new HashMap<String, AbstractJsonSchema>();
+			this.patternProperties = new HashMap<String, AbstractJsonSchema>();
 			this.propertyDependencies = new HashMap<String, Set<String>>();
 			this.schemaDependencies = new HashMap<String, JsonSchemaObject>();
 		}
@@ -236,7 +236,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		 * @param jsonSchemaBuilder
 		 * @return
 		 */
-		public Builder withProperty(String name, JsonSchemaBuilder jsonSchemaBuilder) {
+		public Builder withProperty(String name, AbstractJsonSchema jsonSchemaBuilder) {
 			if (name == null) {
 				throw new IllegalArgumentException("name must not be null");
 			} else if (jsonSchemaBuilder == null) {
@@ -256,7 +256,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		 * @param jsonSchemaBuilder
 		 * @return
 		 */
-		public Builder withPatternProperty(String name, JsonSchemaBuilder jsonSchemaBuilder) {
+		public Builder withPatternProperty(String name, AbstractJsonSchema jsonSchemaBuilder) {
 			if (name == null) {
 				throw new IllegalArgumentException("name must not be null");
 			} else if (jsonSchemaBuilder == null) {
@@ -347,7 +347,7 @@ public class JsonSchemaObject extends JsonSchemaBuilder {
 		 * @param additionalProperties
 		 * @return
 		 */
-		public Builder withAdditionalProperties(JsonSchemaBuilder additionalProperties) {
+		public Builder withAdditionalProperties(AbstractJsonSchema additionalProperties) {
 			this.additionalProperties = null;
 			this.additionalPropertiesObj = additionalProperties;
 			return this;

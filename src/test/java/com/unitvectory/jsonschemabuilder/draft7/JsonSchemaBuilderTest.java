@@ -23,13 +23,13 @@ import org.junit.Test;
 
 public abstract class JsonSchemaBuilderTest {
 
-	abstract JsonSchemaBuilder getRequired();
+	abstract AbstractJsonSchema getRequired();
 
-	abstract JsonSchemaBuilder getNotRequired();
+	abstract AbstractJsonSchema getNotRequired();
 
 	@Test
 	public void testRequired() {
-		JsonSchemaBuilder builder = this.getRequired();
+		AbstractJsonSchema builder = this.getRequired();
 		assertNotNull(builder);
 
 		assertTrue(builder.isRequired());
@@ -37,7 +37,7 @@ public abstract class JsonSchemaBuilderTest {
 
 	@Test
 	public void testNotRequired() {
-		JsonSchemaBuilder builder = this.getNotRequired();
+		AbstractJsonSchema builder = this.getNotRequired();
 		assertNotNull(builder);
 
 		assertFalse(builder.isRequired());

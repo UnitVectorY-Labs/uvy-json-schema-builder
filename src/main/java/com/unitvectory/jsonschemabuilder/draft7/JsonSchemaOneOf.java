@@ -22,16 +22,16 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonSchemaOneOf extends JsonSchemaBuilder {
+public class JsonSchemaOneOf extends AbstractJsonSchema {
 
 	private final boolean required;
 
-	private final List<JsonSchemaBuilder> oneOf;
+	private final List<AbstractJsonSchema> oneOf;
 
 	private JsonSchemaOneOf(Builder builder) {
 		this.required = builder.required;
 
-		List<JsonSchemaBuilder> oneOfList = new ArrayList<JsonSchemaBuilder>();
+		List<AbstractJsonSchema> oneOfList = new ArrayList<AbstractJsonSchema>();
 		oneOfList.addAll(builder.oneOf);
 		this.oneOf = Collections.unmodifiableList(oneOfList);
 	}
@@ -46,14 +46,14 @@ public class JsonSchemaOneOf extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 
 		JSONArray oneOfArr = new JSONArray();
 		json.put("oneOf", oneOfArr);
 
-		for (JsonSchemaBuilder schema : this.oneOf) {
-			oneOfArr.put(schema.schema());
+		for (AbstractJsonSchema schema : this.oneOf) {
+			oneOfArr.put(schema.schemaJson());
 		}
 
 		return json;
@@ -63,15 +63,15 @@ public class JsonSchemaOneOf extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaOneOf> {
 
 		private boolean required;
 
-		private List<JsonSchemaBuilder> oneOf;
+		private List<AbstractJsonSchema> oneOf;
 
 		private Builder() {
 			this.required = false;
-			this.oneOf = new ArrayList<JsonSchemaBuilder>();
+			this.oneOf = new ArrayList<AbstractJsonSchema>();
 		}
 
 		/**
@@ -86,7 +86,7 @@ public class JsonSchemaOneOf extends JsonSchemaBuilder {
 			return this;
 		}
 
-		public Builder withOneOf(JsonSchemaBuilder schema) {
+		public Builder withOneOf(AbstractJsonSchema schema) {
 			if (schema == null) {
 				return this;
 			}

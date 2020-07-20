@@ -22,19 +22,28 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaAllOfTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaAllOf.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaAllOf.create().build();
+	}
+
+	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaAllOf.create().withAllOf(JsonSchemaString.create().withMaxLength(5).build())
+				.withAllOf(JsonSchemaNumber.create().withMinimum(0).build()).build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"allOf\":[{\"type\":\"string\",\"maxLength\":5},{\"type\":\"number\",\"minimum\":0}]}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testAnyOf() {
 		JSONObject actualSchema = JsonSchemaAllOf.create().withAllOf(JsonSchemaString.create().withMaxLength(5).build())
-				.withAllOf(JsonSchemaNumber.create().withMinimum(0).build()).build().schema();
+				.withAllOf(JsonSchemaNumber.create().withMinimum(0).build()).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject(
 				"{\"allOf\":[{\"type\":\"string\",\"maxLength\":5},{\"type\":\"number\",\"minimum\":0}]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);

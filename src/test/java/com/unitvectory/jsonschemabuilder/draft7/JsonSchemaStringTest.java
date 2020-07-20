@@ -22,57 +22,65 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaStringTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaString.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaString.create().build();
 	}
 
 	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaString.create().build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"string\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaString.create().build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinLength() {
-		JSONObject actualSchema = JsonSchemaString.create().withMinLength(10).build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withMinLength(10).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"minLength\":10}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaxLength() {
-		JSONObject actualSchema = JsonSchemaString.create().withMaxLength(10).build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withMaxLength(10).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"maxLength\":10}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testPattern() {
-		JSONObject actualSchema = JsonSchemaString.create().withPattern(".*").build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withPattern(".*").build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"pattern\":\".*\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testEnum() {
-		JSONObject actualSchema = JsonSchemaString.create().withEnumValue("A").withEnumValue("B").build().schema();
+		JSONObject actualSchema = JsonSchemaString.create().withEnumValue("A").withEnumValue("B").build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"enum\":[\"A\",\"B\"]}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithMinLength() {
-		JsonSchemaString.create().withMinLength(-1).build().schema();
+		JsonSchemaString.create().withMinLength(-1).build().schemaJson();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithMaxLength() {
-		JsonSchemaString.create().withMaxLength(-1).build().schema();
+		JsonSchemaString.create().withMaxLength(-1).build().schemaJson();
 	}
 }

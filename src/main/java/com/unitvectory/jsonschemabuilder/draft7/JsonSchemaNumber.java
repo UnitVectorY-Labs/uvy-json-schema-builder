@@ -17,7 +17,7 @@ package com.unitvectory.jsonschemabuilder.draft7;
 
 import org.json.JSONObject;
 
-public class JsonSchemaNumber extends JsonSchemaBuilder {
+public class JsonSchemaNumber extends AbstractJsonSchema {
 
 	private final JsonSchemaType type = JsonSchemaType.NUMBER;
 
@@ -67,7 +67,7 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
 
@@ -108,7 +108,7 @@ public class JsonSchemaNumber extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaNumber> {
 
 		private boolean required;
 

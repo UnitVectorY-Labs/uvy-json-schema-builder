@@ -22,18 +22,26 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaNullTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaNull.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaNull.create().build();
 	}
 
 	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaNull.create().build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"null\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaNull.create().build().schema();
+		JSONObject actualSchema = JsonSchemaNull.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"null\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}

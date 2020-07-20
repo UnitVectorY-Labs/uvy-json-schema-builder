@@ -22,59 +22,67 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaIntegerTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaInteger.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaInteger.create().build();
 	}
 
 	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaInteger.create().build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"integer\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaInteger.create().build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMultipleOf() {
-		JSONObject actualSchema = JsonSchemaInteger.create().withMultipleOf(123).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().withMultipleOf(123).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"multipleOf\":123}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinimum() {
-		JSONObject actualSchema = JsonSchemaInteger.create().withMinimum(4).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().withMinimum(4).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"minimum\":4}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMinimum() {
-		JSONObject actualSchema = JsonSchemaInteger.create().withExclusiveMinimum(5).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().withExclusiveMinimum(5).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"exclusiveMinimum\":5}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaximum() {
-		JSONObject actualSchema = JsonSchemaInteger.create().withMaximum(6).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().withMaximum(6).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"maximum\":6}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMaximum() {
-		JSONObject actualSchema = JsonSchemaInteger.create().withExclusiveMaximum(7).build().schema();
+		JSONObject actualSchema = JsonSchemaInteger.create().withExclusiveMaximum(7).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"integer\",\"exclusiveMaximum\":7}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithMultipleOfNegative() {
-		JsonSchemaInteger.create().withMultipleOf(-1).build().schema();
+		JsonSchemaInteger.create().withMultipleOf(-1).build().schemaJson();
 	}
 }

@@ -17,9 +17,22 @@ package com.unitvectory.jsonschemabuilder.draft7;
 
 import org.json.JSONObject;
 
-public abstract class JsonSchemaBuilder {
+public abstract class AbstractJsonSchema {
 
-	abstract JSONObject schema();
+	abstract JSONObject schemaJson();
 
 	abstract boolean isRequired();
+
+	public JSONObject schema(String id) {
+
+		JSONObject schema = this.schemaJson();
+
+		schema.put("$schema", "http://json-schema.org/draft-07/schema#");
+
+		if (id != null) {
+			schema.put("$id", id);
+		}
+
+		return schema;
+	}
 }

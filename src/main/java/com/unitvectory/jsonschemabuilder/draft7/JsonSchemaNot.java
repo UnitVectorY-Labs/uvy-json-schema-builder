@@ -17,11 +17,11 @@ package com.unitvectory.jsonschemabuilder.draft7;
 
 import org.json.JSONObject;
 
-public class JsonSchemaNot extends JsonSchemaBuilder {
+public class JsonSchemaNot extends AbstractJsonSchema {
 
 	private final boolean required;
 
-	private final JsonSchemaBuilder not;
+	private final AbstractJsonSchema not;
 
 	private JsonSchemaNot(Builder builder) {
 		this.required = builder.required;
@@ -38,11 +38,11 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 
 		if (this.not != null) {
-			json.put("not", this.not.schema());
+			json.put("not", this.not.schemaJson());
 		}
 
 		return json;
@@ -52,11 +52,11 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaNot> {
 
 		private boolean required;
 
-		private JsonSchemaBuilder not;
+		private AbstractJsonSchema not;
 
 		private Builder() {
 			this.required = false;
@@ -74,7 +74,7 @@ public class JsonSchemaNot extends JsonSchemaBuilder {
 			return this;
 		}
 
-		public Builder withNot(JsonSchemaBuilder not) {
+		public Builder withNot(AbstractJsonSchema not) {
 			this.not = not;
 			return this;
 		}

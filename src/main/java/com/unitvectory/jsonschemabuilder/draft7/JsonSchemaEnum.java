@@ -22,7 +22,7 @@ import java.util.TreeSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonSchemaEnum extends JsonSchemaBuilder {
+public class JsonSchemaEnum extends AbstractJsonSchema {
 
 	private final boolean required;
 
@@ -62,7 +62,7 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 
 		JSONArray enumArr = new JSONArray();
@@ -98,7 +98,7 @@ public class JsonSchemaEnum extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaEnum> {
 
 		private boolean required;
 

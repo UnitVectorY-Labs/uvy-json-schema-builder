@@ -22,99 +22,107 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaNumberTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaNumber.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaNumber.create().build();
 	}
 
 	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaNumber.create().build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"number\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaNumber.create().build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMultipleOf() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMultipleOf(123).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMultipleOf(123).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"multipleOf\":123}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMultipleOfDouble() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMultipleOf(123.0).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMultipleOf(123.0).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"multipleOf\":123.0}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinimum() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMinimum(4).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMinimum(4).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"minimum\":4}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMinimumDouble() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMinimum(4.1).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMinimum(4.1).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"minimum\":4.1}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMinimum() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMinimum(5).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMinimum(5).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"exclusiveMinimum\":5}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMinimumDouble() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMinimum(5.2).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMinimum(5.2).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"exclusiveMinimum\":5.2}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaximum() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMaximum(6).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMaximum(6).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"maximum\":6}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testMaximumDouble() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withMaximum(6.3).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withMaximum(6.3).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"maximum\":6.3}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMaximum() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMaximum(7).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMaximum(7).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"exclusiveMaximum\":7}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test
 	public void testExclusiveMaximumDouble() {
-		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMaximum(7.4).build().schema();
+		JSONObject actualSchema = JsonSchemaNumber.create().withExclusiveMaximum(7.4).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"exclusiveMaximum\":7.4}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithMultipleOfNegativeInt() {
-		JsonSchemaNumber.create().withMultipleOf(-1).build().schema();
+		JsonSchemaNumber.create().withMultipleOf(-1).build().schemaJson();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testWithMultipleOfNegativeDouble() {
-		JsonSchemaNumber.create().withMultipleOf(-1.1).build().schema();
+		JsonSchemaNumber.create().withMultipleOf(-1.1).build().schemaJson();
 	}
 }

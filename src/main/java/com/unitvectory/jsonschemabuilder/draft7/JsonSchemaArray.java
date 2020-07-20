@@ -22,21 +22,21 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class JsonSchemaArray extends JsonSchemaBuilder {
+public class JsonSchemaArray extends AbstractJsonSchema {
 
 	private final JsonSchemaType type = JsonSchemaType.ARRAY;
 
 	private final boolean required;
 
-	private final JsonSchemaBuilder contains;
+	private final AbstractJsonSchema contains;
 
-	private final JsonSchemaBuilder itemValidation;
+	private final AbstractJsonSchema itemValidation;
 
-	private final List<JsonSchemaBuilder> itemTuple;
+	private final List<AbstractJsonSchema> itemTuple;
 
 	private final Boolean additionalItems;
 
-	private final JsonSchemaBuilder additionalItemsSchema;
+	private final AbstractJsonSchema additionalItemsSchema;
 
 	private final Integer minItems;
 
@@ -52,7 +52,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		this.itemValidation = builder.itemValidation;
 
 		if (builder.itemTuple != null) {
-			List<JsonSchemaBuilder> itemTupleList = new ArrayList<>();
+			List<AbstractJsonSchema> itemTupleList = new ArrayList<>();
 			itemTupleList.addAll(builder.itemTuple);
 			this.itemTuple = Collections.unmodifiableList(itemTupleList);
 		} else {
@@ -71,25 +71,25 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		return new Builder();
 	}
 
-	JSONObject schema() {
+	JSONObject schemaJson() {
 		JSONObject json = new JSONObject();
 		json.put("type", type.getType());
 
 		if (this.contains != null) {
-			json.put("contains", this.contains.schema());
+			json.put("contains", this.contains.schemaJson());
 		}
 
 		if (this.itemValidation != null) {
 
-			json.put("items", this.itemValidation.schema());
+			json.put("items", this.itemValidation.schemaJson());
 
 		} else if (this.itemTuple != null) {
 
 			JSONArray items = new JSONArray();
 			json.put("items", items);
 
-			for (JsonSchemaBuilder item : this.itemTuple) {
-				items.put(item.schema());
+			for (AbstractJsonSchema item : this.itemTuple) {
+				items.put(item.schemaJson());
 			}
 
 		}
@@ -97,7 +97,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		if (this.additionalItems != null) {
 			json.put("additionalItems", this.additionalItems.booleanValue());
 		} else if (this.additionalItemsSchema != null) {
-			json.put("additionalItems", this.additionalItemsSchema.schema());
+			json.put("additionalItems", this.additionalItemsSchema.schemaJson());
 		}
 
 		if (this.minItems != null) {
@@ -119,19 +119,19 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		return this.required;
 	}
 
-	public static class Builder {
+	public static class Builder extends AbstractJsonSchemaBuilder<Builder, JsonSchemaArray> {
 
 		private boolean required;
 
-		private JsonSchemaBuilder contains;
+		private AbstractJsonSchema contains;
 
-		private JsonSchemaBuilder itemValidation;
+		private AbstractJsonSchema itemValidation;
 
-		private List<JsonSchemaBuilder> itemTuple;
+		private List<AbstractJsonSchema> itemTuple;
 
 		private Boolean additionalItems;
 
-		private JsonSchemaBuilder additionalItemsSchema;
+		private AbstractJsonSchema additionalItemsSchema;
 
 		private Integer minItems;
 
@@ -162,7 +162,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		 * @param contains
 		 * @return
 		 */
-		public Builder withContains(JsonSchemaBuilder contains) {
+		public Builder withContains(AbstractJsonSchema contains) {
 			this.contains = contains;
 			return this;
 		}
@@ -175,7 +175,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		 * @param item
 		 * @return
 		 */
-		public Builder withItem(JsonSchemaBuilder item) {
+		public Builder withItem(AbstractJsonSchema item) {
 			if (item == null) {
 				this.itemValidation = null;
 				return this;
@@ -193,7 +193,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		 * @param items
 		 * @return
 		 */
-		public Builder withItemTuple(JsonSchemaBuilder... items) {
+		public Builder withItemTuple(AbstractJsonSchema... items) {
 			if (items == null) {
 				this.itemTuple = null;
 				return this;
@@ -201,8 +201,8 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 
 			this.itemValidation = null;
 
-			this.itemTuple = new ArrayList<JsonSchemaBuilder>();
-			for (JsonSchemaBuilder item : items) {
+			this.itemTuple = new ArrayList<AbstractJsonSchema>();
+			for (AbstractJsonSchema item : items) {
 				this.itemTuple.add(item);
 			}
 
@@ -229,7 +229,7 @@ public class JsonSchemaArray extends JsonSchemaBuilder {
 		 * @param additionalItems
 		 * @return
 		 */
-		public Builder withAdditionalItems(JsonSchemaBuilder additionalItems) {
+		public Builder withAdditionalItems(AbstractJsonSchema additionalItems) {
 			this.additionalItems = null;
 			this.additionalItemsSchema = additionalItems;
 			return this;

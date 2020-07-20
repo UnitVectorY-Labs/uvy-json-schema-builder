@@ -22,18 +22,26 @@ import org.skyscreamer.jsonassert.JSONAssert;
 public class JsonSchemaBooleanTest extends JsonSchemaBuilderTest {
 
 	@Override
-	JsonSchemaBuilder getRequired() {
+	AbstractJsonSchema getRequired() {
 		return JsonSchemaBoolean.create().withRequired().build();
 	}
 
 	@Override
-	JsonSchemaBuilder getNotRequired() {
+	AbstractJsonSchema getNotRequired() {
 		return JsonSchemaBoolean.create().build();
 	}
 
 	@Test
+	public void testSchema() {
+		JSONObject actualSchema = JsonSchemaBoolean.create().build().schema(null);
+		JSONObject expectedSchema = new JSONObject(
+				"{\"$schema\":\"http://json-schema.org/draft-07/schema#\",\"type\":\"boolean\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
-		JSONObject actualSchema = JsonSchemaBoolean.create().build().schema();
+		JSONObject actualSchema = JsonSchemaBoolean.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\"}");
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
