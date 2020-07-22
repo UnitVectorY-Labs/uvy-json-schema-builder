@@ -260,8 +260,10 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -272,8 +274,10 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -285,8 +289,10 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -302,9 +308,11 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -322,9 +330,11 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -336,14 +346,16 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withProperty(String name, AbstractJsonSchema jsonSchemaBuilder) {
-			if (name == null) {
-				throw new IllegalArgumentException("name must not be null");
-			} else if (jsonSchemaBuilder == null) {
-				throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
-			}
+			synchronized (this) {
+				if (name == null) {
+					throw new IllegalArgumentException("name must not be null");
+				} else if (jsonSchemaBuilder == null) {
+					throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
+				}
 
-			this.properties.put(name, jsonSchemaBuilder);
-			return this;
+				this.properties.put(name, jsonSchemaBuilder);
+				return this;
+			}
 		}
 
 		/**
@@ -356,14 +368,16 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withPatternProperty(String name, AbstractJsonSchema jsonSchemaBuilder) {
-			if (name == null) {
-				throw new IllegalArgumentException("name must not be null");
-			} else if (jsonSchemaBuilder == null) {
-				throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
-			}
+			synchronized (this) {
+				if (name == null) {
+					throw new IllegalArgumentException("name must not be null");
+				} else if (jsonSchemaBuilder == null) {
+					throw new IllegalArgumentException("jsonSchemaBuilder must not be null");
+				}
 
-			this.patternProperties.put(name, jsonSchemaBuilder);
-			return this;
+				this.patternProperties.put(name, jsonSchemaBuilder);
+				return this;
+			}
 		}
 
 		/**
@@ -376,8 +390,10 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withPropertyNames(String propertyNames) {
-			this.propertyNames = propertyNames;
-			return this;
+			synchronized (this) {
+				this.propertyNames = propertyNames;
+				return this;
+			}
 		}
 
 		/**
@@ -387,23 +403,25 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withPropertyDependency(String propertyName, String propertyDependency) {
-			if (propertyName == null) {
-				throw new IllegalArgumentException("propertyName must not be null");
-			} else if (propertyDependency == null) {
-				throw new IllegalArgumentException("propertyDependency must not be null");
+			synchronized (this) {
+				if (propertyName == null) {
+					throw new IllegalArgumentException("propertyName must not be null");
+				} else if (propertyDependency == null) {
+					throw new IllegalArgumentException("propertyDependency must not be null");
+				}
+
+				this.schemaDependencies.remove(propertyName);
+
+				Set<String> set = this.propertyDependencies.get(propertyName);
+				if (set == null) {
+					set = new HashSet<String>();
+					this.propertyDependencies.put(propertyName, set);
+				}
+
+				set.add(propertyDependency);
+
+				return this;
 			}
-
-			this.schemaDependencies.remove(propertyName);
-
-			Set<String> set = this.propertyDependencies.get(propertyName);
-			if (set == null) {
-				set = new HashSet<String>();
-				this.propertyDependencies.put(propertyName, set);
-			}
-
-			set.add(propertyDependency);
-
-			return this;
 		}
 
 		/**
@@ -413,16 +431,18 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withSchemaDependency(String propertyName, JsonSchemaObject schemaDependency) {
-			if (propertyName == null) {
-				throw new IllegalArgumentException("propertyName must not be null");
-			} else if (schemaDependency == null) {
-				throw new IllegalArgumentException("schemaDependency must not be null");
+			synchronized (this) {
+				if (propertyName == null) {
+					throw new IllegalArgumentException("propertyName must not be null");
+				} else if (schemaDependency == null) {
+					throw new IllegalArgumentException("schemaDependency must not be null");
+				}
+
+				this.propertyDependencies.remove(propertyName);
+				this.schemaDependencies.put(propertyName, schemaDependency);
+
+				return this;
 			}
-
-			this.propertyDependencies.remove(propertyName);
-			this.schemaDependencies.put(propertyName, schemaDependency);
-
-			return this;
 		}
 
 		/**
@@ -434,9 +454,11 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withAdditionalProperties(boolean additionalProperties) {
-			this.additionalProperties = additionalProperties;
-			this.additionalPropertiesObj = null;
-			return this;
+			synchronized (this) {
+				this.additionalProperties = additionalProperties;
+				this.additionalPropertiesObj = null;
+				return this;
+			}
 		}
 
 		/**
@@ -447,9 +469,11 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withAdditionalProperties(AbstractJsonSchema additionalProperties) {
-			this.additionalProperties = null;
-			this.additionalPropertiesObj = additionalProperties;
-			return this;
+			synchronized (this) {
+				this.additionalProperties = null;
+				this.additionalPropertiesObj = additionalProperties;
+				return this;
+			}
 		}
 
 		/**
@@ -460,12 +484,14 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinProperties(int minProperties) {
-			if (minProperties < 0) {
-				throw new IllegalArgumentException("minProperties must be non-negative");
-			}
+			synchronized (this) {
+				if (minProperties < 0) {
+					throw new IllegalArgumentException("minProperties must be non-negative");
+				}
 
-			this.minProperties = minProperties;
-			return this;
+				this.minProperties = minProperties;
+				return this;
+			}
 		}
 
 		/**
@@ -476,16 +502,20 @@ public class JsonSchemaObject extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaxProperties(int maxProperties) {
-			if (maxProperties < 0) {
-				throw new IllegalArgumentException("minProperties must be non-negative");
-			}
+			synchronized (this) {
+				if (maxProperties < 0) {
+					throw new IllegalArgumentException("minProperties must be non-negative");
+				}
 
-			this.maxProperties = maxProperties;
-			return this;
+				this.maxProperties = maxProperties;
+				return this;
+			}
 		}
 
 		public JsonSchemaObject build() {
-			return new JsonSchemaObject(this);
+			synchronized (this) {
+				return new JsonSchemaObject(this);
+			}
 		}
 	}
 }

@@ -162,8 +162,10 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -174,8 +176,10 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -187,8 +191,10 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -204,9 +210,11 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -224,9 +232,11 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -236,12 +246,14 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withEnumValue(String enumValue) {
-			if (enumValue == null) {
+			synchronized (this) {
+				if (enumValue == null) {
+					return this;
+				}
+
+				this.enumString.add(enumValue);
 				return this;
 			}
-
-			this.enumString.add(enumValue);
-			return this;
 		}
 
 		/**
@@ -251,8 +263,10 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withEnumValue(int enumValue) {
-			this.enumInteger.add(enumValue);
-			return this;
+			synchronized (this) {
+				this.enumInteger.add(enumValue);
+				return this;
+			}
 		}
 
 		/**
@@ -262,8 +276,10 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withEnumValue(double enumValue) {
-			this.enumDouble.add(enumValue);
-			return this;
+			synchronized (this) {
+				this.enumDouble.add(enumValue);
+				return this;
+			}
 		}
 
 		/**
@@ -272,12 +288,16 @@ public class JsonSchemaEnum extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withNull() {
-			this.enumNull = true;
-			return this;
+			synchronized (this) {
+				this.enumNull = true;
+				return this;
+			}
 		}
 
 		public JsonSchemaEnum build() {
-			return new JsonSchemaEnum(this);
+			synchronized (this) {
+				return new JsonSchemaEnum(this);
+			}
 		}
 	}
 }

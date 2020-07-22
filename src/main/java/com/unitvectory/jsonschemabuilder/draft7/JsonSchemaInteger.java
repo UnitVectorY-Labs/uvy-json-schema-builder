@@ -143,8 +143,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -155,8 +157,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -168,8 +172,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -185,9 +191,11 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -205,9 +213,11 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -218,12 +228,14 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMultipleOf(int multipleOf) {
-			if (multipleOf <= 0) {
-				throw new IllegalArgumentException("multipleOf must be positive");
-			}
+			synchronized (this) {
+				if (multipleOf <= 0) {
+					throw new IllegalArgumentException("multipleOf must be positive");
+				}
 
-			this.multipleOf = multipleOf;
-			return this;
+				this.multipleOf = multipleOf;
+				return this;
+			}
 		}
 
 		/**
@@ -233,8 +245,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinimum(int minimum) {
-			this.minimum = minimum;
-			return this;
+			synchronized (this) {
+				this.minimum = minimum;
+				return this;
+			}
 		}
 
 		/**
@@ -244,8 +258,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMinimum(int exclusiveMinimum) {
-			this.exclusiveMinimum = exclusiveMinimum;
-			return this;
+			synchronized (this) {
+				this.exclusiveMinimum = exclusiveMinimum;
+				return this;
+			}
 		}
 
 		/**
@@ -255,8 +271,10 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaximum(int maximum) {
-			this.maximum = maximum;
-			return this;
+			synchronized (this) {
+				this.maximum = maximum;
+				return this;
+			}
 		}
 
 		/**
@@ -266,12 +284,16 @@ public class JsonSchemaInteger extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMaximum(int exclusiveMaximum) {
-			this.exclusiveMaximum = exclusiveMaximum;
-			return this;
+			synchronized (this) {
+				this.exclusiveMaximum = exclusiveMaximum;
+				return this;
+			}
 		}
 
 		public JsonSchemaInteger build() {
-			return new JsonSchemaInteger(this);
+			synchronized (this) {
+				return new JsonSchemaInteger(this);
+			}
 		}
 	}
 }

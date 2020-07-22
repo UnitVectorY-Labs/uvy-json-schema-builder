@@ -82,21 +82,27 @@ public class JsonSchemaOneOf extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		public Builder withOneOf(AbstractJsonSchema schema) {
-			if (schema == null) {
+			synchronized (this) {
+				if (schema == null) {
+					return this;
+				}
+
+				this.oneOf.add(schema);
 				return this;
 			}
-
-			this.oneOf.add(schema);
-			return this;
 		}
 
 		public JsonSchemaOneOf build() {
-			return new JsonSchemaOneOf(this);
+			synchronized (this) {
+				return new JsonSchemaOneOf(this);
+			}
 		}
 	}
 }

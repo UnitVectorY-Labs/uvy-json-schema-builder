@@ -70,17 +70,23 @@ public class JsonSchemaNot extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		public Builder withNot(AbstractJsonSchema not) {
-			this.not = not;
-			return this;
+			synchronized (this) {
+				this.not = not;
+				return this;
+			}
 		}
 
 		public JsonSchemaNot build() {
-			return new JsonSchemaNot(this);
+			synchronized (this) {
+				return new JsonSchemaNot(this);
+			}
 		}
 	}
 }

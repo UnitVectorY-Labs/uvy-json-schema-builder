@@ -179,8 +179,10 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -191,8 +193,10 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -204,8 +208,10 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -221,9 +227,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -241,9 +249,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -254,13 +264,15 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMultipleOf(int multipleOf) {
-			if (multipleOf <= 0) {
-				throw new IllegalArgumentException("multipleOf must be positive");
-			}
+			synchronized (this) {
+				if (multipleOf <= 0) {
+					throw new IllegalArgumentException("multipleOf must be positive");
+				}
 
-			this.multipleOfI = multipleOf;
-			this.multipleOfD = null;
-			return this;
+				this.multipleOfI = multipleOf;
+				this.multipleOfD = null;
+				return this;
+			}
 		}
 
 		/**
@@ -271,13 +283,15 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMultipleOf(double multipleOf) {
-			if (multipleOf <= 0) {
-				throw new IllegalArgumentException("multipleOf must be positive");
-			}
+			synchronized (this) {
+				if (multipleOf <= 0) {
+					throw new IllegalArgumentException("multipleOf must be positive");
+				}
 
-			this.multipleOfD = multipleOf;
-			this.multipleOfI = null;
-			return this;
+				this.multipleOfD = multipleOf;
+				this.multipleOfI = null;
+				return this;
+			}
 		}
 
 		/**
@@ -287,9 +301,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinimum(int minimum) {
-			this.minimumI = minimum;
-			this.minimumD = null;
-			return this;
+			synchronized (this) {
+				this.minimumI = minimum;
+				this.minimumD = null;
+				return this;
+			}
 		}
 
 		/**
@@ -299,9 +315,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinimum(double minimum) {
-			this.minimumD = minimum;
-			this.minimumI = null;
-			return this;
+			synchronized (this) {
+				this.minimumD = minimum;
+				this.minimumI = null;
+				return this;
+			}
 		}
 
 		/**
@@ -311,9 +329,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMinimum(int exclusiveMinimum) {
-			this.exclusiveMinimumI = exclusiveMinimum;
-			this.exclusiveMinimumD = null;
-			return this;
+			synchronized (this) {
+				this.exclusiveMinimumI = exclusiveMinimum;
+				this.exclusiveMinimumD = null;
+				return this;
+			}
 		}
 
 		/**
@@ -323,9 +343,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMinimum(double exclusiveMinimum) {
-			this.exclusiveMinimumD = exclusiveMinimum;
-			this.exclusiveMinimumI = null;
-			return this;
+			synchronized (this) {
+				this.exclusiveMinimumD = exclusiveMinimum;
+				this.exclusiveMinimumI = null;
+				return this;
+			}
 		}
 
 		/**
@@ -335,9 +357,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaximum(int maximum) {
-			this.maximumI = maximum;
-			this.maximumD = null;
-			return this;
+			synchronized (this) {
+				this.maximumI = maximum;
+				this.maximumD = null;
+				return this;
+			}
 		}
 
 		/**
@@ -347,9 +371,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaximum(double maximum) {
-			this.maximumD = maximum;
-			this.maximumI = null;
-			return this;
+			synchronized (this) {
+				this.maximumD = maximum;
+				this.maximumI = null;
+				return this;
+			}
 		}
 
 		/**
@@ -359,9 +385,11 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMaximum(int exclusiveMaximum) {
-			this.exclusiveMaximumI = exclusiveMaximum;
-			this.exclusiveMaximumD = null;
-			return this;
+			synchronized (this) {
+				this.exclusiveMaximumI = exclusiveMaximum;
+				this.exclusiveMaximumD = null;
+				return this;
+			}
 		}
 
 		/**
@@ -371,13 +399,17 @@ public class JsonSchemaNumber extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withExclusiveMaximum(double exclusiveMaximum) {
-			this.exclusiveMaximumD = exclusiveMaximum;
-			this.exclusiveMaximumI = null;
-			return this;
+			synchronized (this) {
+				this.exclusiveMaximumD = exclusiveMaximum;
+				this.exclusiveMaximumI = null;
+				return this;
+			}
 		}
 
 		public JsonSchemaNumber build() {
-			return new JsonSchemaNumber(this);
+			synchronized (this) {
+				return new JsonSchemaNumber(this);
+			}
 		}
 	}
 }

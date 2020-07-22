@@ -149,8 +149,10 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -161,8 +163,10 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -174,8 +178,10 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -191,9 +197,11 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -211,9 +219,11 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -224,12 +234,14 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinLength(int minLength) {
-			if (minLength < 0) {
-				throw new IllegalArgumentException("minLength must be non-negative");
-			}
+			synchronized (this) {
+				if (minLength < 0) {
+					throw new IllegalArgumentException("minLength must be non-negative");
+				}
 
-			this.minLength = minLength;
-			return this;
+				this.minLength = minLength;
+				return this;
+			}
 		}
 
 		/**
@@ -240,12 +252,14 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaxLength(int maxLength) {
-			if (maxLength < 0) {
-				throw new IllegalArgumentException("maxLength must be non-negative");
-			}
+			synchronized (this) {
+				if (maxLength < 0) {
+					throw new IllegalArgumentException("maxLength must be non-negative");
+				}
 
-			this.maxLength = maxLength;
-			return this;
+				this.maxLength = maxLength;
+				return this;
+			}
 		}
 
 		/**
@@ -257,8 +271,10 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withPattern(String pattern) {
-			this.pattern = pattern;
-			return this;
+			synchronized (this) {
+				this.pattern = pattern;
+				return this;
+			}
 		}
 
 		/**
@@ -269,16 +285,20 @@ public class JsonSchemaString extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withEnumValue(String enumValue) {
-			if (enumValue == null) {
+			synchronized (this) {
+				if (enumValue == null) {
+					return this;
+				}
+
+				this.enumSet.add(enumValue);
 				return this;
 			}
-
-			this.enumSet.add(enumValue);
-			return this;
 		}
 
 		public JsonSchemaString build() {
-			return new JsonSchemaString(this);
+			synchronized (this) {
+				return new JsonSchemaString(this);
+			}
 		}
 	}
 }

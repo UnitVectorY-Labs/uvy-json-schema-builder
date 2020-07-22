@@ -187,8 +187,10 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withRequired() {
-			this.required = true;
-			return this;
+			synchronized (this) {
+				this.required = true;
+				return this;
+			}
 		}
 
 		/**
@@ -199,8 +201,10 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withTitle(String title) {
-			this.title = title;
-			return this;
+			synchronized (this) {
+				this.title = title;
+				return this;
+			}
 		}
 
 		/**
@@ -212,8 +216,10 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withDescription(String description) {
-			this.description = description;
-			return this;
+			synchronized (this) {
+				this.description = description;
+				return this;
+			}
 		}
 
 		/**
@@ -229,9 +235,11 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withReadOnly() {
-			this.readOnly = true;
-			this.writeOnly = null;
-			return this;
+			synchronized (this) {
+				this.readOnly = true;
+				this.writeOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -249,9 +257,11 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withWriteOnly() {
-			this.writeOnly = true;
-			this.readOnly = null;
-			return this;
+			synchronized (this) {
+				this.writeOnly = true;
+				this.readOnly = null;
+				return this;
+			}
 		}
 
 		/**
@@ -262,8 +272,10 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withContains(AbstractJsonSchema contains) {
-			this.contains = contains;
-			return this;
+			synchronized (this) {
+				this.contains = contains;
+				return this;
+			}
 		}
 
 		/**
@@ -275,14 +287,16 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withItem(AbstractJsonSchema item) {
-			if (item == null) {
-				this.itemValidation = null;
+			synchronized (this) {
+				if (item == null) {
+					this.itemValidation = null;
+					return this;
+				}
+
+				this.itemValidation = item;
+				this.itemTuple = null;
 				return this;
 			}
-
-			this.itemValidation = item;
-			this.itemTuple = null;
-			return this;
 		}
 
 		/**
@@ -293,19 +307,21 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withItemTuple(AbstractJsonSchema... items) {
-			if (items == null) {
-				this.itemTuple = null;
+			synchronized (this) {
+				if (items == null) {
+					this.itemTuple = null;
+					return this;
+				}
+
+				this.itemValidation = null;
+
+				this.itemTuple = new ArrayList<AbstractJsonSchema>();
+				for (AbstractJsonSchema item : items) {
+					this.itemTuple.add(item);
+				}
+
 				return this;
 			}
-
-			this.itemValidation = null;
-
-			this.itemTuple = new ArrayList<AbstractJsonSchema>();
-			for (AbstractJsonSchema item : items) {
-				this.itemTuple.add(item);
-			}
-
-			return this;
 		}
 
 		/**
@@ -316,9 +332,11 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withAdditionalItems(boolean additionalItems) {
-			this.additionalItems = additionalItems;
-			this.additionalItemsSchema = null;
-			return this;
+			synchronized (this) {
+				this.additionalItems = additionalItems;
+				this.additionalItemsSchema = null;
+				return this;
+			}
 		}
 
 		/**
@@ -329,9 +347,11 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withAdditionalItems(AbstractJsonSchema additionalItems) {
-			this.additionalItems = null;
-			this.additionalItemsSchema = additionalItems;
-			return this;
+			synchronized (this) {
+				this.additionalItems = null;
+				this.additionalItemsSchema = additionalItems;
+				return this;
+			}
 		}
 
 		/**
@@ -344,12 +364,14 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMinItems(int minItems) {
-			if (minItems < 0) {
-				throw new IllegalArgumentException("minItems must be non-negative");
-			}
+			synchronized (this) {
+				if (minItems < 0) {
+					throw new IllegalArgumentException("minItems must be non-negative");
+				}
 
-			this.minItems = minItems;
-			return this;
+				this.minItems = minItems;
+				return this;
+			}
 		}
 
 		/**
@@ -362,12 +384,14 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withMaxItems(int maxItems) {
-			if (maxItems < 0) {
-				throw new IllegalArgumentException("maxItems must be non-negative");
-			}
+			synchronized (this) {
+				if (maxItems < 0) {
+					throw new IllegalArgumentException("maxItems must be non-negative");
+				}
 
-			this.maxItems = maxItems;
-			return this;
+				this.maxItems = maxItems;
+				return this;
+			}
 		}
 
 		/**
@@ -378,12 +402,16 @@ public class JsonSchemaArray extends AbstractJsonSchema {
 		 * @return
 		 */
 		public Builder withUniqueItems(boolean uniqueItems) {
-			this.uniqueItems = uniqueItems;
-			return this;
+			synchronized (this) {
+				this.uniqueItems = uniqueItems;
+				return this;
+			}
 		}
 
 		public JsonSchemaArray build() {
-			return new JsonSchemaArray(this);
+			synchronized (this) {
+				return new JsonSchemaArray(this);
+			}
 		}
 	}
 }
