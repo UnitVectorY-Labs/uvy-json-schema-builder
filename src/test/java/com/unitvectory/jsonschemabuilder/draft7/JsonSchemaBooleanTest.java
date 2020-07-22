@@ -46,4 +46,31 @@ public class JsonSchemaBooleanTest extends JsonSchemaBuilderTest {
 		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
 	}
 
+	@Test
+	public void testTitle() {
+		JSONObject actualSchema = JsonSchemaBoolean.create().withTitle("My Title").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\",\"title\":\"My Title\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testDescription() {
+		JSONObject actualSchema = JsonSchemaBoolean.create().withDescription("My Description").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\",\"description\":\"My Description\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testReadOnly() {
+		JSONObject actualSchema = JsonSchemaBoolean.create().withReadOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\",\"readOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testWriteOnly() {
+		JSONObject actualSchema = JsonSchemaBoolean.create().withWriteOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"boolean\",\"writeOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
 }

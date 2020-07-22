@@ -47,6 +47,34 @@ public class JsonSchemaNumberTest extends JsonSchemaBuilderTest {
 	}
 
 	@Test
+	public void testTitle() {
+		JSONObject actualSchema = JsonSchemaNumber.create().withTitle("My Title").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"title\":\"My Title\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testDescription() {
+		JSONObject actualSchema = JsonSchemaNumber.create().withDescription("My Description").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"description\":\"My Description\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testReadOnly() {
+		JSONObject actualSchema = JsonSchemaNumber.create().withReadOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"readOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testWriteOnly() {
+		JSONObject actualSchema = JsonSchemaNumber.create().withWriteOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"writeOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testMultipleOf() {
 		JSONObject actualSchema = JsonSchemaNumber.create().withMultipleOf(123).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"number\",\"multipleOf\":123}");

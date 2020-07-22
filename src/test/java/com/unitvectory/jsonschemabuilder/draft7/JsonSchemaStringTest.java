@@ -47,6 +47,34 @@ public class JsonSchemaStringTest extends JsonSchemaBuilderTest {
 	}
 
 	@Test
+	public void testTitle() {
+		JSONObject actualSchema = JsonSchemaString.create().withTitle("My Title").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"title\":\"My Title\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testDescription() {
+		JSONObject actualSchema = JsonSchemaString.create().withDescription("My Description").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"description\":\"My Description\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testReadOnly() {
+		JSONObject actualSchema = JsonSchemaString.create().withReadOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"readOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testWriteOnly() {
+		JSONObject actualSchema = JsonSchemaString.create().withWriteOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"writeOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testMinLength() {
 		JSONObject actualSchema = JsonSchemaString.create().withMinLength(10).build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"string\",\"minLength\":10}");

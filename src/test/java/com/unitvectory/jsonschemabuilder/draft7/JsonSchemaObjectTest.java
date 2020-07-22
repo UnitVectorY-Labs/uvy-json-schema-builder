@@ -40,6 +40,34 @@ public class JsonSchemaObjectTest extends JsonSchemaBuilderTest {
 	}
 
 	@Test
+	public void testTitle() {
+		JSONObject actualSchema = JsonSchemaObject.create().withTitle("My Title").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"title\":\"My Title\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testDescription() {
+		JSONObject actualSchema = JsonSchemaObject.create().withDescription("My Description").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"description\":\"My Description\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testReadOnly() {
+		JSONObject actualSchema = JsonSchemaObject.create().withReadOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"readOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testWriteOnly() {
+		JSONObject actualSchema = JsonSchemaObject.create().withWriteOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\",\"writeOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEmpty() {
 		JSONObject actualSchema = JsonSchemaObject.create().build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"type\":\"object\"}");

@@ -42,6 +42,35 @@ public class JsonSchemaEnumTest extends JsonSchemaBuilderTest {
 	}
 
 	@Test
+	public void testTitle() {
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withTitle("My Title").build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\"],\"title\":\"My Title\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testDescription() {
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withDescription("My Description").build()
+				.schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\"],\"description\":\"My Description\"}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testReadOnly() {
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withReadOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\"],\"readOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
+	public void testWriteOnly() {
+		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withWriteOnly().build().schemaJson();
+		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\"],\"writeOnly\":true}");
+		JSONAssert.assertEquals(expectedSchema, actualSchema, true);
+	}
+
+	@Test
 	public void testEnumString() {
 		JSONObject actualSchema = JsonSchemaEnum.create().withEnumValue("A").withEnumValue("B").build().schemaJson();
 		JSONObject expectedSchema = new JSONObject("{\"enum\":[\"A\",\"B\"]}");
