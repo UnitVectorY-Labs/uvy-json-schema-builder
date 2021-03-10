@@ -51,7 +51,7 @@
 		<junit.version>4.13.1</junit.version>
 		<commons-io.version>2.8.0</commons-io.version>
 		<jsonassert.version>1.5.0</jsonassert.version>
-		<json.version>20201115</json.version>
+		<json.version>20210307</json.version>
 	</properties>
 
 	<dependencies>
